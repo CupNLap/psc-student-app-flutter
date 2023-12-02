@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "84656227361",
+    "project_id": "alchemist-bathery",
+    "storage_bucket": "alchemist-bathery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84656227361:android:b831659844a7300e9bcf60",
+        "android_client_info": {
+          "package_name": "com.example.student"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrqm8aZcC8lO8UZp3rXatPnJkcxXSVzAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
