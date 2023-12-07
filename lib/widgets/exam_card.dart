@@ -39,13 +39,12 @@ class ExamCard extends StatelessWidget {
               code,
               style: const TextStyle(
                 color: Colors.grey,
-                fontSize: 14,
+                fontSize: 11,
               ),
             ),
             const SizedBox(
               height: 8,
             ),
-            // blend the image with a white background
             AspectRatio(
               aspectRatio: 1,
               child: Container(
@@ -69,7 +68,7 @@ class ExamCard extends StatelessWidget {
                 date,
                 style: const TextStyle(
                   color: Colors.grey,
-                  fontSize: 14,
+                  fontSize: 10,
                 ),
               ),
             ),
