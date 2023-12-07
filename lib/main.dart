@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:student/widgets/exam_item.dart';
 import 'package:student/widgets/hero_section.dart';
 import 'package:student/widgets/exam_card.dart';
 import 'firebase_options.dart';
@@ -31,9 +32,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        useMaterial3: true,
+        useMaterial3: false,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.red,
+          seedColor: Colors.white,
         ),
       ),
       home: const MyHomePage(title: 'Alchemist'),
@@ -148,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Text("Recent Exams",
                 style: Theme.of(context).textTheme.titleMedium),
             SizedBox(
-              height: MediaQuery.of(context).size.width / 2.8 * 1.55,
+              height: MediaQuery.of(context).size.width / 2.8 * 1.5,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: examCards.length,
@@ -163,6 +164,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
+
+            const SizedBox(
+              height: 20.0,
+            ),
+            // Upcomming Exams
+            // Horizontal Scroll Section
+            Text("Upcomming Exams",
+                style: Theme.of(context).textTheme.titleMedium),
+            ...examCards.map((exam) => ExamItem(exam))
           ],
         ),
       ),
