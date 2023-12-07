@@ -1,22 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 // Define the ExamCard widget
 class ExamCard extends StatelessWidget {
   final String title;
   final String code;
-  final String imagePath;
-  final String date;
+  final String icon;
+  final Timestamp time;
 
   const ExamCard({
     Key? key,
     required this.title,
     required this.code,
-    required this.imagePath,
-    required this.date,
+    required this.icon,
+    required this.time,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final DateTime dateTime = time.toDate();
+    final String formattedTime =
+        '${dateTime.day}/${dateTime.month}/${dateTime.year} ${dateTime.hour}:${dateTime.minute}';
+
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
@@ -29,12 +34,15 @@ class ExamCard extends StatelessWidget {
           children: [
             Text(
               title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
+            const SizedBox(height: 4),
             Text(
               code,
               style: const TextStyle(
@@ -42,9 +50,7 @@ class ExamCard extends StatelessWidget {
                 fontSize: 11,
               ),
             ),
-            const SizedBox(
-              height: 8,
-            ),
+            const Spacer(),
             AspectRatio(
               aspectRatio: 1,
               child: Container(
@@ -52,7 +58,7 @@ class ExamCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   image: DecorationImage(
                     image: AssetImage(
-                      imagePath,
+                      "assets/images/icons/${icon}.gif",
                     ),
                     fit: BoxFit.cover,
                   ),
@@ -65,7 +71,7 @@ class ExamCard extends StatelessWidget {
             Align(
               alignment: Alignment.bottomRight,
               child: Text(
-                date,
+                formattedTime,
                 style: const TextStyle(
                   color: Colors.grey,
                   fontSize: 10,

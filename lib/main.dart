@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:student/model/batch.dart';
 import 'package:student/widgets/exam_item.dart';
 import 'package:student/widgets/hero_section.dart';
 import 'package:student/widgets/exam_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'firebase_options.dart';
 
 void main() async {
@@ -22,15 +25,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // CollectionReference db = FirebaseFirestore.instance.collection("places");
-    CollectionReference<Map<String, dynamic>> placeCollection =
-        FirebaseFirestore.instance.collection('Places');
-
-    placeCollection.add({"first": "hai", "second": 23, "third": 3}).then(
-        (value) => {print('hai')});
-
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Alchemist Bathery',
       theme: ThemeData(
         useMaterial3: false,
         colorScheme: ColorScheme.fromSeed(
@@ -52,76 +48,121 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  // Get Institute Id and Batch id from local storage
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   // Declare Variables
+  late Batch batch = Batch(name: "---");
   final List<dynamic> examCards = [
     {
       'title': "Awards",
       'code': "MA01",
-      'imagePath': "assets/images/award.gif",
+      'imagePath': "assets/images/icons/award.gif",
       'date': '8:25PM 28-Nov-23'
     },
     {
       'title': "Biology",
       'code': "PHY01",
-      'imagePath': "assets/images/biology.gif",
+      'imagePath': "assets/images/icons/biology.gif",
       'date': '8:25PM 28-Nov-23'
     },
     {
       'title': "Chemistry",
       'code': "CS01",
-      'imagePath': "assets/images/chemistry.gif",
+      'imagePath': "assets/images/icons/chemistry.gif",
       'date': '8:25PM 28-Nov-23'
     },
     {
       'title': "Computer",
       'code': "CHE02",
-      'imagePath': "assets/images/computer.gif",
+      'imagePath': "assets/images/icons/computer.gif",
       'date': '8:25PM 28-Nov-23'
     },
     {
       'title': "English",
       'code': "CA",
-      'imagePath': "assets/images/english.gif",
+      'imagePath': "assets/images/icons/english.gif",
       'date': '8:25PM 28-Nov-23'
     },
     {
       'title': "Finance",
       'code': "IT09",
-      'imagePath': "assets/images/finance.gif",
+      'imagePath': "assets/images/icons/finance.gif",
       'date': '8:25PM 28-Nov-23'
     },
     {
       'title': "Health",
       'code': "IT09",
-      'imagePath': "assets/images/health.gif",
+      'imagePath': "assets/images/icons/health.gif",
       'date': '8:25PM 28-Nov-23'
     },
     {
       'title': "Maths",
       'code': "IT09",
-      'imagePath': "assets/images/math.gif",
+      'imagePath': "assets/images/icons/math.gif",
       'date': '8:25PM 28-Nov-23'
     },
     {
       'title': "Physics",
       'code': "IT09",
-      'imagePath': "assets/images/physics.gif",
+      'imagePath': "assets/images/icons/physics.gif",
       'date': '8:25PM 28-Nov-23'
     },
     {
       'title': "Science",
       'code': "IT09",
-      'imagePath': "assets/images/science.gif",
+      'imagePath': "assets/images/icons/science.gif",
       'date': '8:25PM 28-Nov-23'
     },
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    // Get Institute Id and Batch id from local storage
+    _prefs.then((SharedPreferences prefs) {
+      final String instituteId =
+          prefs.getString('instituteId') ?? "hs7sZbNheSsejVceqcL6";
+      final String batchId =
+          prefs.getString('batchId') ?? "QTLwtugvxW4ja8OWg75O";
+
+      final String batchPath = 'Institute/$instituteId/Batch/$batchId';
+
+      // TODO - restrict the access of batch fetching only to those who have access
+      // TODO - add rule in firestore
+      // TODO - allow fetch only if the current user id is in the batch's students array field
+      DocumentReference batchDoc = FirebaseFirestore.instance.doc(batchPath);
+      batchDoc
+          .withConverter<Batch>(
+            fromFirestore: (snapshot, _) => Batch.fromFirestore(snapshot),
+            toFirestore: (batch, _) => batch.toFirestore(),
+          )
+          .get()
+          .then(
+        (value) {
+          setState(() {
+            batch = value.data()!;
+          });
+        },
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Column(
+          children: [
+            Text(widget.title),
+            Text(batch.name,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: Colors.white)),
+          ],
+        ),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.menu),
@@ -137,7 +178,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(
-          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Notice Card
             const HeroSection(),
@@ -149,17 +189,17 @@ class _MyHomePageState extends State<MyHomePage> {
             Text("Recent Exams",
                 style: Theme.of(context).textTheme.titleMedium),
             SizedBox(
-              height: MediaQuery.of(context).size.width / 2.8 * 1.5,
+              height: MediaQuery.of(context).size.width / 2.8 * 1.6,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: examCards.length,
+                itemCount: batch.exams.length,
                 itemBuilder: (context, index) => SizedBox(
                   width: MediaQuery.of(context).size.width / 2.8,
                   child: ExamCard(
-                    title: examCards[index]['title']!,
-                    code: examCards[index]['code']!,
-                    imagePath: examCards[index]['imagePath']!,
-                    date: examCards[index]['date']!,
+                    title: batch.exams[index].name,
+                    code: batch.exams[index].code,
+                    icon: batch.exams[index].icon,
+                    time: batch.exams[index].startAt,
                   ),
                 ),
               ),
