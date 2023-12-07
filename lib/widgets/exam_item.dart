@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student/model/batch.dart';
 
 class ExamItem extends StatelessWidget {
   const ExamItem(
@@ -6,10 +7,14 @@ class ExamItem extends StatelessWidget {
     super.key,
   });
 
-  final Map exam;
+  final BatchExam exam;
 
   @override
   Widget build(BuildContext context) {
+    final DateTime dateTime = exam.startAt.toDate();
+    final String formattedTime =
+        '${dateTime.day}/${dateTime.month}/${dateTime.year} ${dateTime.hour}:${dateTime.minute}';
+
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
@@ -24,31 +29,35 @@ class ExamItem extends StatelessWidget {
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  Text(exam['title'],
-                      style: Theme.of(context).textTheme.titleMedium),
+                  Text(
+                    exam.name,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const Spacer(),
                   const SizedBox(height: 16.0),
                   Text(
-                    "50 questions\nmore questions",
+                    '${(exam.time / 60).floor()} minutes\n${exam.time % 60} seconds',
                     style: Theme.of(context).textTheme.bodySmall,
                   )
                 ],
               ),
-              Image.asset(exam['imagePath'], width: 50, height: 50),
+              Image.asset('assets/images/icons/${exam.icon}.gif',
+                  width: 50, height: 50),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
-                    exam['code'],
+                    exam.code,
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   const Spacer(),
                   Text(
-                    exam['date'],
+                    formattedTime,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],

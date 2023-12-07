@@ -150,6 +150,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final List<BatchExam> recentExams = batch.exams
+        .where((exam) => exam.endAt.toDate().isBefore(DateTime.now()))
+        .toList();
+    final List<BatchExam> upcommingExams = batch.exams
+        .where((exam) => exam.startAt.toDate().isAfter(DateTime.now()))
+        .toList();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -192,14 +199,14 @@ class _MyHomePageState extends State<MyHomePage> {
               height: MediaQuery.of(context).size.width / 2.8 * 1.6,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: batch.exams.length,
+                itemCount: recentExams.length,
                 itemBuilder: (context, index) => SizedBox(
                   width: MediaQuery.of(context).size.width / 2.8,
                   child: ExamCard(
-                    title: batch.exams[index].name,
-                    code: batch.exams[index].code,
-                    icon: batch.exams[index].icon,
-                    time: batch.exams[index].startAt,
+                    title: recentExams[index].name,
+                    code: recentExams[index].code,
+                    icon: recentExams[index].icon,
+                    time: recentExams[index].startAt,
                   ),
                 ),
               ),
@@ -212,7 +219,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // Horizontal Scroll Section
             Text("Upcomming Exams",
                 style: Theme.of(context).textTheme.titleMedium),
-            ...examCards.map((exam) => ExamItem(exam))
+            ...upcommingExams.map((exam) => ExamItem(exam))
           ],
         ),
       ),
