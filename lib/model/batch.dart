@@ -7,7 +7,7 @@ class BatchExam {
   Timestamp startAt;
   Timestamp endAt;
   int time;
-  DocumentReference ref;
+  DocumentReference? ref;
 
   // A constructor for the batchexam class
   BatchExam({
@@ -20,6 +20,17 @@ class BatchExam {
     required this.ref,
   });
 
+  factory BatchExam.empty() {
+    return BatchExam(
+        name: '',
+        code: '',
+        icon: '',
+        startAt: Timestamp.now(),
+        endAt: Timestamp.now(),
+        time: 0,
+        ref: null);
+  }
+
   factory BatchExam.fromMap(Map<String, dynamic> map) {
     return BatchExam(
       name: map['name'],
@@ -31,6 +42,20 @@ class BatchExam {
       ref: map['ref'],
     );
   }
+
+  // Getter method to check if the exam is empty
+  bool get isEmpty => ref == null;
+
+  // Getter method to check if the exam is ongoing
+  bool get isOngoing =>
+      startAt.toDate().isBefore(DateTime.now()) &&
+      endAt.toDate().isAfter(DateTime.now());
+  
+  // Getter method to check if the exam is upcoming
+  bool get isUpcoming => startAt.toDate().isAfter(DateTime.now());
+
+  // Getter method to check if the exam is expired
+  bool get isExpired => endAt.toDate().isBefore(DateTime.now());
 }
 
 class Batch {

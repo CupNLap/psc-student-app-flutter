@@ -150,12 +150,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<BatchExam> recentExams = batch.exams
-        .where((exam) => exam.endAt.toDate().isBefore(DateTime.now()))
-        .toList();
-    final List<BatchExam> upcommingExams = batch.exams
-        .where((exam) => exam.startAt.toDate().isAfter(DateTime.now()))
-        .toList();
+    // Group the exams to recent, upcomming and ongoing based on the start time and end time
+    final List<BatchExam> expiredExams =
+        batch.exams.where((exam) => exam.isExpired).toList();
+    final List<BatchExam> upcommingExams =
+        batch.exams.where((exam) => exam.isUpcoming).toList();
+    final BatchExam ongoingExam = batch.exams
+        .firstWhere((exam) => exam.isOngoing, orElse: () => BatchExam.empty());
 
     return Scaffold(
       appBar: AppBar(
@@ -188,35 +189,52 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             // Notice Card
             const HeroSection(),
-            const SizedBox(
-              height: 20.0,
+
+            // Ongoing Exams
+            const SizedBox(height: 20.0),
+            Text("Ongoing Exams",
+                style: Theme.of(context).textTheme.titleMedium),
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ongoingExam.isEmpty
+                      ? const Text("No Exams")
+                      : AspectRatio(
+                          aspectRatio: 16 / 9,
+                          child: ExamItem(ongoingExam),
+                        ),
+                ],
+              ),
             ),
-            // Recent Exams
+
+            // Expired Exams
             // Horizontal Scroll Section
-            Text("Recent Exams",
+            const SizedBox(height: 20.0),
+            Text("Expired Exams",
                 style: Theme.of(context).textTheme.titleMedium),
             SizedBox(
               height: MediaQuery.of(context).size.width / 2.8 * 1.6,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: recentExams.length,
+                itemCount: expiredExams.length,
                 itemBuilder: (context, index) => SizedBox(
                   width: MediaQuery.of(context).size.width / 2.8,
                   child: ExamCard(
-                    title: recentExams[index].name,
-                    code: recentExams[index].code,
-                    icon: recentExams[index].icon,
-                    time: recentExams[index].startAt,
+                    title: expiredExams[index].name,
+                    code: expiredExams[index].code,
+                    icon: expiredExams[index].icon,
+                    time: expiredExams[index].startAt,
                   ),
                 ),
               ),
             ),
 
-            const SizedBox(
-              height: 20.0,
-            ),
             // Upcomming Exams
             // Horizontal Scroll Section
+            const SizedBox(height: 20.0),
             Text("Upcomming Exams",
                 style: Theme.of(context).textTheme.titleMedium),
             ...upcommingExams.map((exam) => ExamItem(exam))
