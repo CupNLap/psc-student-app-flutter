@@ -28,13 +28,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Alchemist Bathery',
       theme: ThemeData(
-          useMaterial3: false,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.white,
+        useMaterial3: false,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.white,
+        ),
+        textTheme: const TextTheme(
+          titleMedium: TextStyle(
+            color: Colors.lightBlueAccent,
+            fontWeight: FontWeight.bold,
           ),
-          textTheme: const TextTheme(
-            titleMedium: TextStyle(color: Colors.lightBlueAccent),
-          )),
+        ),
+      ),
       home: const MyHomePage(title: 'Alchemist'),
     );
   }
