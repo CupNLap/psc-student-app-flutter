@@ -28,11 +28,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Alchemist Bathery',
       theme: ThemeData(
-        useMaterial3: false,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.white,
-        ),
-      ),
+          useMaterial3: false,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.white,
+          ),
+          textTheme: const TextTheme(
+            titleMedium: TextStyle(color: Colors.lightBlueAccent),
+          )),
       home: const MyHomePage(title: 'Alchemist'),
     );
   }
@@ -53,68 +55,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // Declare Variables
   late Batch batch = Batch(name: "---");
-  final List<dynamic> examCards = [
-    {
-      'title': "Awards",
-      'code': "MA01",
-      'imagePath': "assets/images/icons/award.gif",
-      'date': '8:25PM 28-Nov-23'
-    },
-    {
-      'title': "Biology",
-      'code': "PHY01",
-      'imagePath': "assets/images/icons/biology.gif",
-      'date': '8:25PM 28-Nov-23'
-    },
-    {
-      'title': "Chemistry",
-      'code': "CS01",
-      'imagePath': "assets/images/icons/chemistry.gif",
-      'date': '8:25PM 28-Nov-23'
-    },
-    {
-      'title': "Computer",
-      'code': "CHE02",
-      'imagePath': "assets/images/icons/computer.gif",
-      'date': '8:25PM 28-Nov-23'
-    },
-    {
-      'title': "English",
-      'code': "CA",
-      'imagePath': "assets/images/icons/english.gif",
-      'date': '8:25PM 28-Nov-23'
-    },
-    {
-      'title': "Finance",
-      'code': "IT09",
-      'imagePath': "assets/images/icons/finance.gif",
-      'date': '8:25PM 28-Nov-23'
-    },
-    {
-      'title': "Health",
-      'code': "IT09",
-      'imagePath': "assets/images/icons/health.gif",
-      'date': '8:25PM 28-Nov-23'
-    },
-    {
-      'title': "Maths",
-      'code': "IT09",
-      'imagePath': "assets/images/icons/math.gif",
-      'date': '8:25PM 28-Nov-23'
-    },
-    {
-      'title': "Physics",
-      'code': "IT09",
-      'imagePath': "assets/images/icons/physics.gif",
-      'date': '8:25PM 28-Nov-23'
-    },
-    {
-      'title': "Science",
-      'code': "IT09",
-      'imagePath': "assets/images/icons/science.gif",
-      'date': '8:25PM 28-Nov-23'
-    },
-  ];
 
   @override
   void initState() {
