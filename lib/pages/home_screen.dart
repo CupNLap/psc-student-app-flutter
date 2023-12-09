@@ -1,7 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:student/model/batch.dart';
+import 'package:student/provider/batch_provider.dart';
 import 'package:student/widgets/exam_item.dart';
 import 'package:student/widgets/hero_section.dart';
 import 'package:student/widgets/exam_card.dart';
@@ -35,23 +36,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
       final String batchPath = 'Institute/$instituteId/Batch/$batchId';
 
-      // TODO - restrict the access of batch fetching only to those who have access
-      // TODO - add rule in firestore
-      // TODO - allow fetch only if the current user id is in the batch's students array field
-      DocumentReference batchDoc = FirebaseFirestore.instance.doc(batchPath);
-      batchDoc
-          .withConverter<Batch>(
-            fromFirestore: (snapshot, _) => Batch.fromFirestore(snapshot),
-            toFirestore: (batch, _) => batch.toFirestore(),
-          )
-          .get()
-          .then(
-        (value) {
-          setState(() {
-            batch = value.data()!;
-          });
-        },
-      );
+      // Get Batch
+      Provider.of<BatchProvider>(context, listen: false)
+          .getBatch(batchPath)
+          .then((b) => {setState(() => batch = b)});
     });
   }
 
