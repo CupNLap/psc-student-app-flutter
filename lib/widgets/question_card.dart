@@ -19,16 +19,19 @@ class QuestionCard extends StatelessWidget {
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 24.0),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          QuestionView(question.text),
-          const SizedBox(height: 30.0),
-          OptionsView(
-            question.options,
-            onOptionSelected: (selectedOption) {
-              print('Selected option: $selectedOption');
-            },
-          ),
-        ]),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            QuestionView(question.text),
+            const SizedBox(height: 30.0),
+            OptionsView(
+              question.options,
+              onOptionSelected: (selectedOption) {
+                print('Selected option: $selectedOption');
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -62,7 +65,6 @@ class QuestionView extends StatelessWidget {
         child: Text(
           question,
           textAlign: TextAlign.start,
-          maxLines: 4,
           style: const TextStyle(
             height: 0,
             color: Colors.white,
@@ -97,12 +99,10 @@ class _OptionsViewState extends State<OptionsView> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: widget.options.map((option) {
         return Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 24.0,
-            vertical: 8.0,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: ElevatedButton(
             onPressed: () {
               setState(() {

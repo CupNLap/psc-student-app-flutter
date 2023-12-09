@@ -15,7 +15,12 @@ class Question {
     required this.answer,
     this.timer = 900,
     this.type = QuestionType.mcq,
-  });
+  }) {
+    if (!options.contains(answer)) {
+      throw Exception(
+          'There is no right answer found for this question in options');
+    }
+  }
 
   factory Question.fromFirestore(DocumentSnapshot snap) {
     return Question(

@@ -42,14 +42,14 @@ class QuizScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: QuestionCard(
                 Question(
-                  text: 'text',
+                  text: 'text There is no right answer found for this question in options There is no right answer found for this question There is no right answer found for this question in optionsin options text There is no right answer found for this question in options There is no right answer found for this question There is no right answer found for this question in optionsin options?',
                   options: {
                     'options1',
                     'options2',
                     'options3',
                     'options4',
                   },
-                  answer: 'answer',
+                  answer: 'options1',
                 ),
               ),
             ),
