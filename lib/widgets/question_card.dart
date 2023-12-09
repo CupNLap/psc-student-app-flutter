@@ -22,7 +22,7 @@ class QuestionCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            QuestionView(question.text),
+            QuestionView(question.question),
             const SizedBox(height: 30.0),
             OptionsView(
               question.options,

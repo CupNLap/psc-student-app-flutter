@@ -3,18 +3,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 enum QuestionType { mcq }
 
 class Question {
-  String text;
+  String question;
   QuestionType type;
   int timer;
   Set<String> options;
   String answer;
+  Set<String> topics;
 
   Question({
-    required this.text,
+    required this.question,
     required this.options,
     required this.answer,
     this.timer = 900,
     this.type = QuestionType.mcq,
+    this.topics = const {},
   }) {
     if (!options.contains(answer)) {
       throw Exception(
@@ -24,21 +26,32 @@ class Question {
 
   factory Question.fromFirestore(DocumentSnapshot snap) {
     return Question(
-      text: snap.get('text'),
+      question: snap.get('question'),
       type: snap.get('type'),
       timer: snap.get('timer'),
       options: snap.get('options'),
+      topics: snap.get('topics'),
       answer: snap.get('answer'),
     );
   }
 
+  factory Question.fromMap(Map<String, dynamic> map) {
+    return Question(
+      question: map['question'],
+      timer: map['timer'],
+      options: {...map['options']},
+      answer: map['answer'],
+      topics: {...map['topics']},
+    );
+  }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['text'] = text;
+    data['question'] = question;
     data['type'] = type;
     data['timer'] = timer;
     data['options'] = options;
     data['answer'] = answer;
+    data['topics'] = topics;
     return data;
   }
 }

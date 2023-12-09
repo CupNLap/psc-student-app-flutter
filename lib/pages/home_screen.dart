@@ -18,11 +18,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // Get Institute Id and Batch id from local storage
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
   // Declare Variables
   late Batch batch = Batch(name: "---");
+
+  // Get Institute Id and Batch id from local storage
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   @override
   void initState() {

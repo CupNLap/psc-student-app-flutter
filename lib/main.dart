@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:student/pages/home_screen.dart';
 import 'package:student/provider/batch_provider.dart';
+import 'package:student/provider/exam_provider.dart';
 
 import 'firebase_options.dart';
 
@@ -18,6 +19,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => BatchProvider()),
+        ChangeNotifierProvider(create: (_) => ExamProvider()),
       ],
       child: const MyApp(),
     ),
