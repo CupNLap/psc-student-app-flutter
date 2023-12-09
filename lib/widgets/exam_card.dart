@@ -24,12 +24,29 @@ class ExamCard extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () => {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => QuizScreen(quizRef: exam.ref),
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              content: Text('Are ready to attempt the exam - "${exam.name}"?'),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text("Cancel")),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuizScreen(quizRef: exam.ref),
+                      ),
+                    );
+                  },
+                  child: const Text("OK"),
+                ),
+              ],
             ),
-          )
+          ),
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),

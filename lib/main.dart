@@ -25,11 +25,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: false,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.white,
+          seedColor: Colors.red,
         ),
         textTheme: const TextTheme(
           titleMedium: TextStyle(
-            color: Colors.lightBlueAccent,
+            color: Colors.red,
             fontWeight: FontWeight.bold,
           ),
         ),
