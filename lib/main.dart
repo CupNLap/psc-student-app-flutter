@@ -135,6 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const HeroSection(),
 
             // Ongoing Exams
+            // Single Exam Item
             const SizedBox(height: 20.0),
             Text("Ongoing Exams",
                 style: Theme.of(context).textTheme.titleMedium),
@@ -172,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
 
             // Upcomming Exams
-            // Horizontal Scroll Section
+            // Vertical Scroll Section
             const SizedBox(height: 20.0),
             Text("Upcomming Exams",
                 style: Theme.of(context).textTheme.titleMedium),

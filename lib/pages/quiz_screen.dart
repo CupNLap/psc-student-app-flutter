@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:student/widgets/ads/banner.dart';
 import 'package:student/widgets/question_card.dart';
 
 class QuizScreen extends StatelessWidget {
@@ -18,7 +19,7 @@ class QuizScreen extends StatelessWidget {
       //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       // ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 60.0),
+        padding: const EdgeInsets.symmetric(vertical: 60.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -34,7 +35,11 @@ class QuizScreen extends StatelessWidget {
                 height: 0,
               ),
             ),
-            const QuestionCard(),
+            const AdBanner(),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: QuestionCard(),
+            ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.amber,
