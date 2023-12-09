@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:student/model/question.dart';
 
 class QuestionCard extends StatelessWidget {
-  const QuestionCard({
+  const QuestionCard(
+    this.question, {
     super.key,
   });
+
+  final Question question;
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +20,10 @@ class QuestionCard extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 24.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const QuestionView("question is here my friend"),
+          QuestionView(question.text),
           const SizedBox(height: 30.0),
           OptionsView(
-            const ['Option A', 'Option B', 'Option C', 'Option D'],
+            question.options,
             onOptionSelected: (selectedOption) {
               print('Selected option: $selectedOption');
             },
@@ -65,14 +70,14 @@ class QuestionView extends StatelessWidget {
             fontFamily: 'Kodchasan',
             fontWeight: FontWeight.w600,
           ),
-        ),
+        ).animate().slide(begin: Offset(-1, 0)),
       ),
     );
   }
 }
 
 class OptionsView extends StatefulWidget {
-  final List<String> options;
+  final Set<String> options;
   final Function(String) onOptionSelected;
 
   const OptionsView(

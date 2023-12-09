@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:student/widgets/ads/banner.dart';
 import 'package:student/widgets/question_card.dart';
 
+import 'package:student/model/question.dart';
+
 class QuizScreen extends StatelessWidget {
   const QuizScreen({
     super.key,
@@ -36,9 +38,20 @@ class QuizScreen extends StatelessWidget {
               ),
             ),
             const AdBanner(),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: QuestionCard(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: QuestionCard(
+                Question(
+                  text: 'text',
+                  options: {
+                    'options1',
+                    'options2',
+                    'options3',
+                    'options4',
+                  },
+                  answer: 'answer',
+                ),
+              ),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -46,7 +59,7 @@ class QuizScreen extends StatelessWidget {
                 foregroundColor: Colors.black,
               ),
               onPressed: () {},
-              child: Text("Next Question"),
+              child: const Text("Next Question"),
             )
           ],
         ),
