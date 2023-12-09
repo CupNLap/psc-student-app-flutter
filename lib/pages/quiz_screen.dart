@@ -1,8 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:student/widgets/question_card.dart';
 
 class QuizScreen extends StatelessWidget {
-  const QuizScreen({super.key});
+  const QuizScreen({
+    super.key,
+    this.quizRef,
+  });
+
+  final DocumentReference<Object?>? quizRef;
 
   @override
   Widget build(BuildContext context) {

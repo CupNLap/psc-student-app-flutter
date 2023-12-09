@@ -166,12 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 itemCount: expiredExams.length,
                 itemBuilder: (context, index) => SizedBox(
                   width: MediaQuery.of(context).size.width / 2.8,
-                  child: ExamCard(
-                    title: expiredExams[index].name,
-                    code: expiredExams[index].code,
-                    icon: expiredExams[index].icon,
-                    time: expiredExams[index].startAt,
-                  ),
+                  child: ExamCard(exam: expiredExams[index]),
                 ),
               ),
             ),

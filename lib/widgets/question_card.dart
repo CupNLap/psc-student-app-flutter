@@ -14,18 +14,16 @@ class QuestionCard extends StatelessWidget {
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 24.0),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const QuestionView("question is here my friend"),
-              const SizedBox(height: 30.0),
-              OptionsView(
-                const ['Option A', 'Option B', 'Option C', 'Option D'],
-                onOptionSelected: (selectedOption) {
-                  print('Selected option: $selectedOption');
-                },
-              ),
-            ]),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const QuestionView("question is here my friend"),
+          const SizedBox(height: 30.0),
+          OptionsView(
+            const ['Option A', 'Option B', 'Option C', 'Option D'],
+            onOptionSelected: (selectedOption) {
+              print('Selected option: $selectedOption');
+            },
+          ),
+        ]),
       ),
     );
   }
@@ -72,7 +70,6 @@ class QuestionView extends StatelessWidget {
     );
   }
 }
-
 
 class OptionsView extends StatefulWidget {
   final List<String> options;
