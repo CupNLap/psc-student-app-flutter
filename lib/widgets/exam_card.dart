@@ -6,9 +6,9 @@ import 'package:student/pages/quiz_screen.dart';
 class ExamCard extends StatelessWidget {
   final BatchExam exam;
 
-  const ExamCard({
+  const ExamCard(
+    this.exam, {
     Key? key,
-    required this.exam,
   }) : super(key: key);
 
   @override
