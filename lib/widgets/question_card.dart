@@ -1,17 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:provider/provider.dart';
 import 'package:student/model/question.dart';
+import 'package:student/provider/exam_provider.dart';
 
 class QuestionCard extends StatelessWidget {
-  const QuestionCard(
-    this.question, {
+  QuestionCard({
     super.key,
-  });
+    this.question,
+    this.questionIndex,
+  }) {
+    assert(question == null || questionIndex == null,
+        'Exactly one of question or questionIndex must be provided, not both');
+  }
 
-  final Question question;
+  final Question? question;
+  final int? questionIndex;
 
   @override
   Widget build(BuildContext context) {
+    // Get the question object based on the available information
+    Question questionObject;
+    if (question != null) {
+      questionObject = question!;
+    } else if (questionIndex != null) {
+      final examProvider = Provider.of<ExamProvider>(context, listen: false);
+      questionObject = examProvider.getQuestionAtIndex(questionIndex!);
+    } else {
+      throw Exception('Either question or questionIndex must be provided');
+    }
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
@@ -22,10 +40,10 @@ class QuestionCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            QuestionView(question.question),
+            QuestionView(questionObject.question),
             const SizedBox(height: 30.0),
             OptionsView(
-              question.options,
+              questionObject.options,
               onOptionSelected: (selectedOption) {
                 print('Selected option: $selectedOption');
               },

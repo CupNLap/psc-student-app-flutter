@@ -23,7 +23,6 @@ class _QuizScreenState extends State<QuizScreen> {
   Exam? exam;
   int currentQuestionIndex = 0;
 
-
   @override
   void initState() {
     super.initState();
@@ -75,7 +74,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   const AdBanner(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: QuestionCard(exam!.questions[currentQuestionIndex]),
+                    child: QuestionCard(questionIndex: currentQuestionIndex),
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(

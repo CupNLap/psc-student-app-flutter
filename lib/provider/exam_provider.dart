@@ -1,11 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:student/model/question.dart';
 
 import '../model/exam.dart';
 
 class ExamProvider extends ChangeNotifier {
   final Map<String, Exam> _exams = {};
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Exam? currentExam = null;
 
   /// Fetches exam data from Firestore using the provided [examPath].
   ///
@@ -50,13 +53,14 @@ class ExamProvider extends ChangeNotifier {
   ///
   /// If an error occurs during the fetching process, it returns an error state
   /// [Exam] object.
-  Future<Exam> getExam(String examPath) async {
+  Future<Exam?> getExam(String examPath) async {
     if (_exams.containsKey('examPath')) {
-      return _exams[examPath]!;
+      currentExam = _exams[examPath]!;
+      return currentExam;
     } else {
       try {
-        Exam examData = await _fetchExam(examPath);
-        return examData;
+        currentExam = await _fetchExam(examPath);
+        return currentExam;
       } catch (e) {
         // Handle the error if needed
         if (kDebugMode) {
@@ -67,4 +71,6 @@ class ExamProvider extends ChangeNotifier {
       }
     }
   }
+
+  Question getQuestionAtIndex(int i) => currentExam!.questions[i];
 }
