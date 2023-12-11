@@ -21,6 +21,8 @@ class QuizScreen extends StatefulWidget {
 
 class _QuizScreenState extends State<QuizScreen> {
   Exam? exam;
+  int currentQuestionIndex = 0;
+
 
   @override
   void initState() {
@@ -29,6 +31,22 @@ class _QuizScreenState extends State<QuizScreen> {
     Provider.of<ExamProvider>(context, listen: false)
         .getExam(widget.quizRef!.path)
         .then((value) => setState(() => exam = value));
+  }
+
+  void handleNextClick() {
+    // Check if all questions have been answered
+    if (currentQuestionIndex + 1 >= exam!.questions.length) {
+      // All questions answered, show result screen
+      // TODO - Make the routings more dynamic, and use named routes
+      // TODO - Add results to the exam
+      // Navigator.pushNamed(context, '/result');
+      Navigator.pop(context);
+    } else {
+      // Move to next question
+      setState(() {
+        currentQuestionIndex++;
+      });
+    }
   }
 
   @override
@@ -57,14 +75,14 @@ class _QuizScreenState extends State<QuizScreen> {
                   const AdBanner(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: QuestionCard(exam!.questions[1]),
+                    child: QuestionCard(exam!.questions[currentQuestionIndex]),
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.amber,
                       foregroundColor: Colors.black,
                     ),
-                    onPressed: () {},
+                    onPressed: () => handleNextClick(),
                     child: const Text("Next Question"),
                   )
                 ],
