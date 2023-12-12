@@ -45,7 +45,8 @@ class QuestionCard extends StatelessWidget {
             OptionsView(
               questionObject.options,
               onOptionSelected: (selectedOption) {
-                print('Selected option: $selectedOption');
+                Provider.of<ExamProvider>(context, listen: false)
+                    .optionsSelected(questionIndex!, selectedOption);
               },
             ),
           ],
@@ -90,7 +91,7 @@ class QuestionView extends StatelessWidget {
             fontFamily: 'Kodchasan',
             fontWeight: FontWeight.w600,
           ),
-        ).animate().slide(begin: Offset(-1, 0)),
+        ).animate().slide(begin: const Offset(-1, 0)),
       ),
     );
   }

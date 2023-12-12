@@ -41,3 +41,62 @@ class Exam {
     };
   }
 }
+
+class ExamResult {
+  String userId;
+  Timestamp startAt;
+  Map<int, Response> response = {};
+  List<Action> actions = [];
+  Timestamp? endAt;
+  double markScored = 0;
+
+  // A constructor for the examresult class
+  ExamResult({
+    required this.userId,
+    required this.startAt,
+  });
+}
+
+enum Actions {
+  examStarted,
+  examEnded,
+  questionSkipped,
+  questionTimedOut,
+  questionAnsweredCorrectly,
+  questionAnsweredWrongly,
+  answerReviewStarted,
+  answerReviewEnded,
+}
+
+class Action {
+  final int timeStamp;
+  final Actions action;
+  final String details;
+
+  factory Action(
+    Actions action, {
+    String details = '',
+  }) {
+    return Action._(
+      timeStamp: DateTime.now().millisecondsSinceEpoch,
+      action: action,
+      details: details,
+    );
+  }
+
+  Action._({
+    required this.timeStamp,
+    required this.action,
+    this.details = '',
+  });
+}
+
+class Response {
+  String answer;
+  int timeTaken;
+
+  Response({
+    required this.answer,
+    required this.timeTaken,
+  });
+}

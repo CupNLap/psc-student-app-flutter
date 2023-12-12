@@ -8,7 +8,8 @@ class ExamProvider extends ChangeNotifier {
   final Map<String, Exam> _exams = {};
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Exam? currentExam = null;
+  Exam? currentExam;
+  ExamResult? currentExamResult;
 
   /// Fetches exam data from Firestore using the provided [examPath].
   ///
@@ -73,4 +74,76 @@ class ExamProvider extends ChangeNotifier {
   }
 
   Question getQuestionAtIndex(int i) => currentExam!.questions[i];
+
+  void optionsSelected(int questionIndex, String selectedOption) {
+    try {
+      if (currentExamResult == null) {
+        currentExamResult = ExamResult(
+          userId: "1", // TODO - Replace with actual user ID
+          startAt: Timestamp.now(),
+        );
+
+        // Add the exam started action
+        currentExamResult!.actions.add(
+          Action(
+            Actions.examStarted,
+            details: "{examCode:${currentExam!.code}}",
+          ),
+        );
+      }
+
+      // record the current user selected option
+      currentExamResult!.response[questionIndex] =
+          // TODO - Add time taken
+          Response(answer: selectedOption, timeTaken: 1);
+
+      // record the state of answered question in actions list
+      currentExamResult!.actions.add(
+        Action(
+          currentExam!.questions[questionIndex].answer == selectedOption
+              ? Actions.questionAnsweredCorrectly
+              : Actions.questionAnsweredWrongly,
+          details: "{questionIndex:$questionIndex}",
+        ),
+      );
+
+      // Update the ExamResult provider
+      notifyListeners();
+    } catch (e) {
+      reset();
+      rethrow;
+    }
+  }
+
+  void examCompleted() {
+    // Get the current timestamp
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+
+    // Update the exam Result intance
+    currentExamResult!.actions.add(Action(
+      Actions.examEnded,
+      details: '{examCode:${currentExam!.code}}',
+    ));
+    currentExamResult!.endAt = Timestamp.fromMillisecondsSinceEpoch(timestamp);
+
+    // Calculate and udpate the mark scored
+    int markScored = 0;
+    currentExamResult!.response.entries.forEach((element) {
+      if (element.value.answer == currentExam!.questions[element.key].answer) {
+        markScored += 3;
+      } else {
+        markScored -= 1;
+      }
+    });
+    currentExamResult!.markScored =
+        (markScored / 3).toStringAsFixed(2) as double;
+
+    // Update the ExamResult provider
+    notifyListeners();
+  }
+
+  void reset() {
+    currentExam = null;
+    currentExamResult = null;
+  }
 }

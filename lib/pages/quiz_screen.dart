@@ -39,6 +39,8 @@ class _QuizScreenState extends State<QuizScreen> {
       // TODO - Make the routings more dynamic, and use named routes
       // TODO - Add results to the exam
       // Navigator.pushNamed(context, '/result');
+
+      Provider.of<ExamProvider>(context, listen: false).examCompleted();
       Navigator.pop(context);
     } else {
       // Move to next question
