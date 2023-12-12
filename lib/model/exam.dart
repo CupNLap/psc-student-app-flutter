@@ -49,6 +49,7 @@ class ExamResult {
   List<Action> actions = [];
   Timestamp? endAt;
   double markScored = 0;
+  int totalMarks = 0;
 
   // A constructor for the examresult class
   ExamResult({

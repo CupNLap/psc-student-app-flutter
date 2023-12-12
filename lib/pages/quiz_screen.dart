@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:student/pages/result_screen.dart';
 import 'package:student/provider/exam_provider.dart';
 import 'package:student/widgets/ads/banner.dart';
 import 'package:student/widgets/question_card.dart';
@@ -41,7 +42,10 @@ class _QuizScreenState extends State<QuizScreen> {
       // Navigator.pushNamed(context, '/result');
 
       Provider.of<ExamProvider>(context, listen: false).examCompleted();
+
       Navigator.pop(context);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => ResultsScreen()));
     } else {
       // Move to next question
       setState(() {

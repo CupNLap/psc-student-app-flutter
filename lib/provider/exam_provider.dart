@@ -136,8 +136,10 @@ class ExamProvider extends ChangeNotifier {
       }
     });
     currentExamResult!.markScored =
-        (markScored / 3).toStringAsFixed(2) as double;
+        double.parse((markScored / 3).toStringAsFixed(2));
 
+    // Update the total marks
+    currentExamResult!.totalMarks = currentExam!.questions.length;
     // Update the ExamResult provider
     notifyListeners();
   }
