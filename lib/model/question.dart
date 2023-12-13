@@ -9,6 +9,7 @@ class Question {
   Set<String> options;
   String answer;
   Set<String> topics;
+  String? selectedOption;
 
   Question({
     required this.question,

@@ -75,21 +75,25 @@ class ExamProvider extends ChangeNotifier {
 
   Question getQuestionAtIndex(int i) => currentExam!.questions[i];
 
+  void examStarted() {
+    currentExamResult = ExamResult(
+      userId: "1", // TODO - Replace with actual user ID
+      startAt: Timestamp.now(),
+    );
+
+    // Add the exam started action
+    currentExamResult!.actions.add(
+      Action(
+        Actions.examStarted,
+        details: "{examCode:${currentExam!.code}}",
+      ),
+    );
+  }
+
   void optionsSelected(int questionIndex, String selectedOption) {
     try {
       if (currentExamResult == null) {
-        currentExamResult = ExamResult(
-          userId: "1", // TODO - Replace with actual user ID
-          startAt: Timestamp.now(),
-        );
-
-        // Add the exam started action
-        currentExamResult!.actions.add(
-          Action(
-            Actions.examStarted,
-            details: "{examCode:${currentExam!.code}}",
-          ),
-        );
+        examStarted();
       }
 
       // record the current user selected option
@@ -119,6 +123,11 @@ class ExamProvider extends ChangeNotifier {
     // Get the current timestamp
     final timestamp = DateTime.now().millisecondsSinceEpoch;
 
+    // handle if the user has not started the exam yet
+    if (currentExamResult == null) {
+      examStarted();
+    }
+
     // Update the exam Result intance
     currentExamResult!.actions.add(Action(
       Actions.examEnded,
@@ -147,5 +156,51 @@ class ExamProvider extends ChangeNotifier {
   void reset() {
     currentExam = null;
     currentExamResult = null;
+  }
+
+  Map<String, List<Question>> getResponseAnalysis() {
+    // Initialize empty lists for categorized questions
+    List<Question> correctAnswers = [];
+    List<Question> wrongAnswers = [];
+    List<Question> skippedQuestions = [];
+
+    // Get the questions and responses
+    List<Question> questions = currentExam!.questions;
+    Map<int, Response> responses = currentExamResult!.response;
+
+    // Loop through each question and categorize it
+    for (int i = 0; i < questions.length; i++) {
+      Question question = questions[i];
+      Response? response = responses[i];
+
+      // Check if the question was answered
+      if (response != null) {
+        // Check if the answer is correct
+        question.selectedOption = response.answer;
+        if (response.answer == question.answer) {
+          correctAnswers.add(question);
+        } else {
+          wrongAnswers.add(question);
+        }
+      } else {
+        skippedQuestions.add(question);
+      }
+    }
+
+    // Use these categorized lists for further analysis
+    // For example, you can calculate the following:
+    // - Percentage of questions answered correctly
+    // - Average time taken for each type of answer
+    // - Identify areas where the user needs improvement
+
+    print("Correctly answered questions: ${correctAnswers.length}");
+    print("Wrongly answered questions: ${wrongAnswers.length}");
+    print("Skipped questions: ${skippedQuestions.length}");
+
+    return {
+      "correctAnswers": correctAnswers,
+      "wrongAnswers": wrongAnswers,
+      "skippedQuestions": skippedQuestions
+    };
   }
 }

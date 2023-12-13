@@ -28,9 +28,19 @@ class _QuizScreenState extends State<QuizScreen> {
   void initState() {
     super.initState();
 
-    Provider.of<ExamProvider>(context, listen: false)
-        .getExam(widget.quizRef!.path)
-        .then((value) => setState(() => exam = value));
+    ExamProvider provider = Provider.of<ExamProvider>(context, listen: false);
+
+    provider.getExam(widget.quizRef!.path).then((value) => {
+          // inform the provider about the exam is started
+          provider.examStarted(),
+          // update the exam value
+          setState(() => exam = value),
+        });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   void handleNextClick() {
@@ -44,6 +54,7 @@ class _QuizScreenState extends State<QuizScreen> {
       Provider.of<ExamProvider>(context, listen: false).examCompleted();
 
       Navigator.pop(context);
+
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => ResultsScreen()));
     } else {

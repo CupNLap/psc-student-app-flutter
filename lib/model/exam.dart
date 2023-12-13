@@ -8,9 +8,6 @@ class Exam {
   String name; // The name of the exam
   List batches; // The batch that the exam is for
   List<Question> questions; // A list of questions in the exam
-  // TODO - uncomment and create a list of results
-  // List<Result> results; // A list of results for the exam
-  // NOFIELDS - starting and ending time is not in Exam but in BatchExam
 
   // A constructor for the exam class
   Exam({
