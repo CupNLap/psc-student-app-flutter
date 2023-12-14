@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -74,7 +75,24 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.account_circle),
-            onPressed: () {/* open profile */},
+            onPressed: () {
+              /* open profile */
+              showMenu(
+                context: context,
+                position: const RelativeRect.fromLTRB(50.0, 100.0, 0.0, 0.0),
+                items: <PopupMenuEntry>[
+                  const PopupMenuItem(
+                    value: 'signout',
+                    child: Text('Sign Out'),
+                  ),
+                ],
+              ).then((value) {
+                if (value == 'signout') {
+                  // Implement sign out functionality here
+                  FirebaseAuth.instance.signOut();
+                }
+              });
+            },
           ),
         ],
       ),
