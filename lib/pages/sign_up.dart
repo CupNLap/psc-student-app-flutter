@@ -77,7 +77,7 @@ class SignUpPageState extends State<SignUpPage> {
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text('Processing Data Completed')),
+                            content: Text('Processing Data')),
                       );
 
                       auth.verifyPhoneNumber(
@@ -136,7 +136,7 @@ class SignUpPageState extends State<SignUpPage> {
                     maxLength: 6,
                   ),
                   ElevatedButton(
-                    onPressed: () async {
+                    onPressed: () {
                       if (_otpFormKey.currentState!.validate()) {
                         String smsCode = _optController.text;
 
@@ -147,7 +147,9 @@ class SignUpPageState extends State<SignUpPage> {
                                 smsCode: smsCode);
 
                         // Sign the user in (or link) with the credential
-                        await auth.signInWithCredential(credential);
+                        auth.signInWithCredential(credential);
+
+                        setState(() => currentState = SigningState.loading);
                       }
                     },
                     style: ElevatedButton.styleFrom(
