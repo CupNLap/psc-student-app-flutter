@@ -11,9 +11,16 @@ class AuthGate extends StatelessWidget {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
+        // TODO - make sure the phone number is linked
+        // || snapshot.data?.phoneNumber != null
         if (!snapshot.hasData) {
           return const SignUpPage();
         }
+        // TODO - gather email details as well
+        // else if(snapshot.data?.emailVerified == false) {
+        //   return const GoogleSignIn();
+        // }
+
         return const MyHomePage(title: 'Alchemist Bathery');
       },
     );

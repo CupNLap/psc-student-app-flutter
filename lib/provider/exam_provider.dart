@@ -1,12 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:student/model/question.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/exam.dart';
 
 class ExamProvider extends ChangeNotifier {
   final Map<String, Exam> _exams = {};
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   Exam? currentExam;
   ExamResult? currentExamResult;
@@ -76,8 +79,8 @@ class ExamProvider extends ChangeNotifier {
   Question getQuestionAtIndex(int i) => currentExam!.questions[i];
 
   void examStarted() {
-    currentExamResult = ExamResult(
-      userId: "1", // TODO - Replace with actual user ID
+    currentExamResult = ExamResult.essentials(
+      userId: auth.currentUser!.uid,
       startAt: Timestamp.now(),
     );
 
@@ -137,25 +140,57 @@ class ExamProvider extends ChangeNotifier {
 
     // Calculate and udpate the mark scored
     int markScored = 0;
-    currentExamResult!.response.entries.forEach((element) {
+    for (var element in currentExamResult!.response.entries) {
       if (element.value.answer == currentExam!.questions[element.key].answer) {
         markScored += 3;
       } else {
         markScored -= 1;
       }
-    });
+    }
     currentExamResult!.markScored =
         double.parse((markScored / 3).toStringAsFixed(2));
 
     // Update the total marks
     currentExamResult!.totalMarks = currentExam!.questions.length;
     // Update the ExamResult provider
+
+    _saveExamResultInFirestore();
+
     notifyListeners();
   }
 
   void reset() {
     currentExam = null;
     currentExamResult = null;
+  }
+
+  void _saveExamResultInFirestore() {
+    if (currentExam != null && currentExamResult != null) {
+      final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+
+      prefs.then((SharedPreferences prefs) {
+        // TODO - replace the "demo" docs with "others" or "proderror" docs
+        final String instituteId = prefs.getString('instituteId') ?? "demo";
+
+        // save the exam result in firestore
+        _firestore
+            .collection('Institute')
+            .doc(instituteId)
+            .collection('Exams')
+            .doc(currentExam?.id)
+            .collection('Results')
+            .add(currentExamResult!.toMap())
+            .then(
+          (DocumentReference<Map<String, dynamic>> value) {
+            _firestore.collection("Users").doc(auth.currentUser!.uid).update({
+              "ExamResults": FieldValue.arrayUnion([value])
+            });
+          },
+        );
+      });
+    } else {
+      throw Exception('Exam or ExamResult is null');
+    }
   }
 
   Map<String, List<Question>> getResponseAnalysis() {

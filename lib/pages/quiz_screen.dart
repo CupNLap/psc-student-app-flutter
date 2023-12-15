@@ -43,7 +43,7 @@ class _QuizScreenState extends State<QuizScreen> {
     super.dispose();
   }
 
-  void handleNextClick() {
+  void _handleNextClick() {
     // Check if all questions have been answered
     if (currentQuestionIndex + 1 >= exam!.questions.length) {
       // All questions answered, show result screen
@@ -55,8 +55,8 @@ class _QuizScreenState extends State<QuizScreen> {
 
       Navigator.pop(context);
 
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ResultsScreen()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const ResultsScreen()));
     } else {
       // Move to next question
       setState(() {
@@ -98,7 +98,7 @@ class _QuizScreenState extends State<QuizScreen> {
                       backgroundColor: Colors.amber,
                       foregroundColor: Colors.black,
                     ),
-                    onPressed: () => handleNextClick(),
+                    onPressed: () => _handleNextClick(),
                     child: const Text("Next Question"),
                   )
                 ],

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -76,19 +77,12 @@ class SignUpPageState extends State<SignUpPage> {
                       var phoneNumber = '+91${_phoneNumberController.text}';
 
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Processing Data')),
-                      );
+                          const SnackBar(content: Text('Processing Data')));
 
                       auth.verifyPhoneNumber(
                         phoneNumber: phoneNumber,
                         verificationCompleted:
                             (PhoneAuthCredential credential) async {
-                          // ANDROID ONLY!
-
-                          // Sign the user in (or link) with the auto-generated credential
-                          auth.signInWithCredential(credential);
-
                           setState(() => currentState =
                               SigningState.verificationCompleted);
                         },
@@ -125,52 +119,63 @@ class SignUpPageState extends State<SignUpPage> {
           );
         case SigningState.codeSent:
           return Form(
-              key: _otpFormKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextFormField(
-                    decoration: decorator("Enter OTP", '000000'),
-                    controller: _optController,
-                    keyboardType: TextInputType.number,
-                    maxLength: 6,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_otpFormKey.currentState!.validate()) {
-                        String smsCode = _optController.text;
+            key: _otpFormKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextFormField(
+                  decoration: decorator("Enter OTP", '000000'),
+                  controller: _optController,
+                  keyboardType: TextInputType.number,
+                  maxLength: 6,
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_otpFormKey.currentState!.validate()) {
+                      String smsCode = _optController.text;
 
-                        // Create a PhoneAuthCredential with the code
-                        PhoneAuthCredential credential =
-                            PhoneAuthProvider.credential(
-                                verificationId: verificationId,
-                                smsCode: smsCode);
+                      // Create a PhoneAuthCredential with the code
+                      PhoneAuthCredential credential =
+                          PhoneAuthProvider.credential(
+                              verificationId: verificationId, smsCode: smsCode);
 
-                        // Sign the user in (or link) with the credential
-                        auth.signInWithCredential(credential);
+                      // Sign the user in (or link) with the credential
+                      auth.signInWithCredential(credential).then((value) {
+                        var d = auth.currentUser!;
+                        d.updateDisplayName(_userNameController.text);
 
-                        setState(() => currentState = SigningState.loading);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.red[900],
-                      shadowColor: Colors.red[900],
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
+                        FirebaseFirestore.instance
+                            .collection("Users")
+                            .doc(d.uid)
+                            .set({
+                          "uid": d.uid,
+                          "name": _userNameController.text,
+                          "phone": _phoneNumberController.text,
+                        });
+                      });
+                      setState(() => currentState = SigningState.loading);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.red[900],
+                    shadowColor: Colors.red[900],
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
                     ),
-                    child: const Text('Send OTP'),
-                  )
-                ],
-              ));
+                  ),
+                  child: const Text('Send OTP'),
+                )
+              ],
+            ),
+          );
         case SigningState.verificationCompleted:
           return const Center(child: Text('Verification Completed'));
         case SigningState.verificationFailed:
           return const Center(child: Text('Verification Failed'));
         default:
-          return const Text("Something unkown happened");
+          return const Text("Something unknown happened");
       }
     }
 
