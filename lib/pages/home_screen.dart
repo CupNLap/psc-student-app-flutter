@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:student/model/batch.dart';
+import 'package:student/pages/batch_join_page.dart';
 import 'package:student/provider/batch_provider.dart';
+import 'package:student/provider/user_provider.dart';
 import 'package:student/widgets/exam_item.dart';
 import 'package:student/widgets/hero_section.dart';
 import 'package:student/widgets/exam_card.dart';
@@ -20,32 +22,46 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // Declare Variables
-  late Batch batch = Batch(name: "---");
-
-  // Get Institute Id and Batch id from local storage
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late Batch batch = Batch.empty();
 
   @override
   void initState() {
     super.initState();
-    // Get Institute Id and Batch id from local storage
-    _prefs.then((SharedPreferences prefs) {
-      final String instituteId =
-          prefs.getString('instituteId') ?? "hs7sZbNheSsejVceqcL6";
-      final String batchId =
-          prefs.getString('batchId') ?? "QTLwtugvxW4ja8OWg75O";
-
-      final String batchPath = 'Institute/$instituteId/Batch/$batchId';
-
-      // Get Batch
-      Provider.of<BatchProvider>(context, listen: false)
-          .getBatch(batchPath)
-          .then((b) => {setState(() => batch = b)});
-    });
+    // Fetch the user details form the firestore
+    Provider.of<UserProvider>(context, listen: false)
+        .fetchUserDetails();
   }
 
   @override
   Widget build(BuildContext context) {
+    var userDetails = Provider.of<UserProvider>(context).student;
+
+    // Show loading screen until the data is fetched
+    if (userDetails.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    // Show the Batch Joining page if the user has not joined any batch
+    if (userDetails.batches.isEmpty) {
+      return const BatchJoinPage();
+    }
+
+    // Fetch the batch details from the firestore is not fetched yet
+    if (batch.isEmpty) {
+      // Fetch the batch details from the firestore
+      userDetails.batches.first
+          .withConverter(
+            fromFirestore: (snapshot, _) => Batch.fromFirestore(snapshot),
+            toFirestore: (b, _) => b.toFirestore(),
+          )
+          .get()
+          .then((batchSnap) {
+        setState(() {
+          batch = batchSnap.data()!;
+        });
+      });
+    }
+
     // Group the exams to recent, upcomming and ongoing based on the start time and end time
     final List<BatchExam> expiredExams =
         batch.exams.where((exam) => exam.isExpired).toList();
@@ -54,7 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
     final BatchExam ongoingExam = batch.exams
         .firstWhere((exam) => exam.isOngoing, orElse: () => BatchExam.empty());
 
+    // Home Screen of the studnet app that shows the exam list of the batch
     return Scaffold(
+      // App bar containing the batch name and sign out feature
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Column(
@@ -96,6 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
+      // Home Screen Body contains the list of ongoing, upcomming and expired exams
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(

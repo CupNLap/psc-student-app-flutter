@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:student/pages/auth_gate.dart';
 import 'package:student/provider/batch_provider.dart';
 import 'package:student/provider/exam_provider.dart';
+import 'package:student/provider/user_provider.dart';
 
 import 'firebase_options.dart';
 
@@ -20,6 +21,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => BatchProvider()),
         ChangeNotifierProvider(create: (_) => ExamProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: const MyApp(),
     ),

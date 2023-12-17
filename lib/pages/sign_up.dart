@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../model/user.dart' as MyUser;
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -141,17 +142,19 @@ class SignUpPageState extends State<SignUpPage> {
 
                       // Sign the user in (or link) with the credential
                       auth.signInWithCredential(credential).then((value) {
-                        var d = auth.currentUser!;
-                        d.updateDisplayName(_userNameController.text);
+                        var user = auth.currentUser!;
+                        user.updateDisplayName(_userNameController.text);
 
                         FirebaseFirestore.instance
                             .collection("Users")
-                            .doc(d.uid)
-                            .set({
-                          "uid": d.uid,
-                          "name": _userNameController.text,
-                          "phone": _phoneNumberController.text,
-                        });
+                            .doc(user.uid)
+                            .set(
+                              MyUser.User(
+                                      uid: user.uid,
+                                      name: _userNameController.text,
+                                      phone: _phoneNumberController.text)
+                                  .toFirestore(),
+                            );
                       });
                       setState(() => currentState = SigningState.loading);
                     }

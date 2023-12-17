@@ -50,7 +50,7 @@ class BatchExam {
   bool get isOngoing =>
       startAt.toDate().isBefore(DateTime.now()) &&
       endAt.toDate().isAfter(DateTime.now());
-  
+
   // Getter method to check if the exam is upcoming
   bool get isUpcoming => startAt.toDate().isAfter(DateTime.now());
 
@@ -59,6 +59,7 @@ class BatchExam {
 }
 
 class Batch {
+  String? id;
   String name; // The name of the batch
   List<DocumentReference> admins; // A list of admins of this batch
   List<DocumentReference> students; // A list of students in the batch
@@ -67,10 +68,19 @@ class Batch {
   // A constructor for the batch class
   Batch({
     required this.name,
+    this.id,
     this.students = const [],
     this.admins = const [],
     this.exams = const [],
   });
+
+  factory Batch.empty() {
+    return Batch(
+      name: '',
+    );
+  }
+
+  bool get isEmpty => name.isEmpty;
 
   factory Batch.fromFirestore(DocumentSnapshot snap) {
     List<BatchExam> exams =
@@ -81,6 +91,7 @@ class Batch {
         List<DocumentReference>.from(snap.get('students'));
 
     return Batch(
+      id: snap.id,
       name: snap.get('name'),
       admins: adminRefs,
       students: studentRefs,
@@ -96,6 +107,44 @@ class Batch {
       'name': name,
       'exams': exams.map((ref) => ref).toList(),
       'students': students.map((ref) => ref).toList(),
+      'admins': admins.map((ref) => ref).toList(),
+    };
+  }
+}
+
+class BatchJoinRequest {
+  DocumentReference batch;
+  DocumentReference user;
+  Timestamp created;
+  String status;
+  String userName;
+
+  BatchJoinRequest({
+    required this.userName,
+    required this.batch,
+    required this.user,
+    required this.created,
+    required this.status,
+  });
+
+  factory BatchJoinRequest.fromFirestore(DocumentSnapshot snap) {
+    return BatchJoinRequest(
+      userName: snap.get('userName'),
+      batch: snap.get('batch'),
+      user: snap.get('user'),
+      created: snap.get('created'),
+      status: snap.get('status'),
+    );
+  }
+
+  // Used to send data to firebase-firestore
+  Map<String, dynamic> toFirestore() {
+    return {
+      'userName': userName,
+      'batch': batch,
+      'user': user,
+      'created': created,
+      'status': status, // pending, accepted, rejected
     };
   }
 }
