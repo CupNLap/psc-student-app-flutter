@@ -22,24 +22,10 @@ class BatchJoinPage extends StatefulWidget {
 }
 
 class _BatchJoinPageState extends State<BatchJoinPage> {
+  String _scanBarcode = '';
+
   @override
   Widget build(BuildContext context) {
-    void saveInSharedPreferences(String instituteId, String batchId) {
-      final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
-      prefs.then((SharedPreferences prefs) {
-        prefs.setString('instituteId', instituteId);
-        prefs.setString('batchId', batchId);
-
-        // TODO - check whether this is needed anymore
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  const MyHomePage(title: 'Alchemist Bathery')),
-        );
-      });
-    }
-
     void requestToJoinBatch(String instituteId, String batchId) {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
       final user = FirebaseAuth.instance.currentUser!;
@@ -72,32 +58,38 @@ class _BatchJoinPageState extends State<BatchJoinPage> {
             // Join the specific batch
             var ids = barcodeScanRes.split('/');
 
-            // saveInSharedPreferences(ids[0], ids[1]);
-
             requestToJoinBatch(ids[0], ids[1]);
-            // Provider.of<BatchProvider>(context).requestToJoinBatch(ids[0], ids[1]);
+
+            // If the widget was removed from the tree while the asynchronous platform
+            // message was in flight, we want to discard the reply rather than calling
+            // setState to update our non-existent appearance.
+            if (!mounted) return;
+            setState(() {
+              _scanBarcode = barcodeScanRes;
+            });
           }
         });
       } on PlatformException {
         print('Failed to get platform version.');
       }
-
-      // If the widget was removed from the tree while the asynchronous platform
-      // message was in flight, we want to discard the reply rather than calling
-      // setState to update our non-existent appearance.
-      if (!mounted) return;
-
-      // setState(() {
-      //   _scanBarcode = barcodeScanRes;
-      // });
     }
 
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          onPressed: () => scanQR(),
-          child: const Text('Start QR scan'),
-        ),
+        child: _scanBarcode.isNotEmpty
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                      "Request to Join the batch has been sent to respective admins"),
+                  const Text("Please ask your admin to accept the request"),
+                  Text(_scanBarcode),
+                ],
+              )
+            : ElevatedButton(
+                onPressed: () => scanQR(),
+                child: const Text('Start QR scan'),
+              ),
       ),
     );
   }
