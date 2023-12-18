@@ -79,7 +79,7 @@ class ExamCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     image: DecorationImage(
                       image: AssetImage(
-                        "assets/images/icons/${exam.icon}.gif",
+                        exam.icon,
                       ),
                       fit: BoxFit.cover,
                     ),

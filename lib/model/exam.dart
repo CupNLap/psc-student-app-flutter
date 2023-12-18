@@ -7,7 +7,6 @@ class Exam {
   String? id;
   String code; // A unique identifier for the exam
   String name; // The name of the exam
-  List batches; // The batch that the exam is for
   List<Question> questions; // A list of questions in the exam
 
   // A constructor for the exam class
@@ -15,7 +14,6 @@ class Exam {
     this.id,
     required this.code,
     required this.name,
-    required this.batches,
     required this.questions,
   });
 
@@ -30,7 +28,6 @@ class Exam {
       id: snap.id,
       code: snap.get('code'),
       name: snap.get('name'),
-      batches: snap.get('batches'),
       questions: questions,
     );
   }
@@ -42,7 +39,6 @@ class Exam {
     return {
       'code': code,
       'name': name,
-      'batchs': batches,
       'questions': questions,
     };
   }

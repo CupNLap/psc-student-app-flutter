@@ -44,8 +44,7 @@ class ExamItem extends StatelessWidget {
                   )
                 ],
               ),
-              Image.asset('assets/images/icons/${exam.icon}.gif',
-                  width: 50, height: 50),
+              Image.asset(exam.icon, width: 50, height: 50),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
