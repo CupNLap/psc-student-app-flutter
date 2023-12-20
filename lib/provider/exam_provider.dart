@@ -200,25 +200,18 @@ class ExamProvider extends ChangeNotifier {
 
   void _saveExamResultInFirestore() {
     if (currentExam != null && currentExamResult != null) {
-      final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
-
-      prefs.then((SharedPreferences prefs) {
-        // TODO - replace the "demo" docs with "others" or "proderror" docs
-        final String instituteId = prefs.getString('instituteId') ?? "demo";
-
-        // save the exam result in firestore
-        _firestore
-            .doc(currentExamPath!)
-            .collection('Results')
-            .add(currentExamResult!.toMap())
-            .then(
-          (DocumentReference<Map<String, dynamic>> value) {
-            _firestore.collection("Users").doc(auth.currentUser!.uid).update({
-              "ExamResults": FieldValue.arrayUnion([value])
-            });
-          },
-        );
-      });
+      // save the exam result in firestore
+      _firestore
+          .doc(currentExamPath!)
+          .collection('Results')
+          .add(currentExamResult!.toMap())
+          .then(
+        (DocumentReference<Map<String, dynamic>> value) {
+          _firestore.collection("Users").doc(auth.currentUser!.uid).update({
+            "ExamResults": FieldValue.arrayUnion([value])
+          });
+        },
+      );
     } else {
       throw Exception('Exam or ExamResult is null');
     }
