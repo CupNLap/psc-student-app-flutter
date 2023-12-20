@@ -45,6 +45,7 @@ class Exam {
 }
 
 class ExamResult {
+  String userName;
   String userId;
   Timestamp startAt;
   Map<int, Response> response = {};
@@ -55,6 +56,7 @@ class ExamResult {
 
   // A constructor for the examresult class
   ExamResult({
+    required this.userName,
     required this.userId,
     required this.startAt,
     required this.response,
@@ -64,10 +66,15 @@ class ExamResult {
     required this.totalMarks,
   });
 
-  ExamResult.essentials({required this.userId, required this.startAt});
+  ExamResult.essentials({
+    required this.userName,
+    required this.userId,
+    required this.startAt,
+  });
 
   factory ExamResult.fromFirestore(DocumentSnapshot snap) {
     return ExamResult(
+      userName: snap.get('userName'),
       userId: snap.get('userId'),
       startAt: snap.get('startAt'),
       response: snap.get('response'),
@@ -80,6 +87,7 @@ class ExamResult {
 
   Map<String, dynamic> toMap() {
     return {
+      'userName': userName,
       'userId': userId,
       'startAt': startAt,
       'response': {

@@ -83,6 +83,7 @@ class ExamProvider extends ChangeNotifier {
 
   void examStarted() {
     currentExamResult = ExamResult.essentials(
+      userName: auth.currentUser!.displayName!,
       userId: auth.currentUser!.uid,
       startAt: Timestamp.now(),
     );
