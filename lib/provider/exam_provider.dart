@@ -13,6 +13,7 @@ class ExamProvider extends ChangeNotifier {
 
   Exam? currentExam;
   ExamResult? currentExamResult;
+  String? currentExamPath;
 
   /// Fetches exam data from Firestore using the provided [examPath].
   ///
@@ -60,10 +61,12 @@ class ExamProvider extends ChangeNotifier {
   Future<Exam?> getExam(String examPath) async {
     if (_exams.containsKey('examPath')) {
       currentExam = _exams[examPath]!;
+      currentExamPath = examPath;
       return currentExam;
     } else {
       try {
         currentExam = await _fetchExam(examPath);
+        currentExamPath = examPath;
         return currentExam;
       } catch (e) {
         // Handle the error if needed
@@ -85,12 +88,26 @@ class ExamProvider extends ChangeNotifier {
     );
 
     // Add the exam started action
-    currentExamResult!.actions.add(
+    currentExamResult!.actions.addAll([
       Action(
         Actions.examStarted,
         details: "{examCode:${currentExam!.code}}",
       ),
-    );
+      Action(
+        Actions.questionShowed,
+        details: "{questionIndex:0}",
+      ),
+    ]);
+  }
+
+  int _timeTakenForCurrentQuestion() {
+    // get the time of action where the ActionType is questionShowed
+    Action questionShowingAction = currentExamResult!.actions
+        .lastWhere((element) => element.action == Actions.questionShowed);
+
+    int timeTaken =
+        DateTime.now().millisecondsSinceEpoch - questionShowingAction.timeStamp;
+    return timeTaken;
   }
 
   void optionsSelected(int questionIndex, String selectedOption) {
@@ -100,26 +117,43 @@ class ExamProvider extends ChangeNotifier {
       }
 
       // record the current user selected option
-      currentExamResult!.response[questionIndex] =
-          // TODO - Add time taken
-          Response(answer: selectedOption, timeTaken: 1);
+      currentExamResult!.response[questionIndex] = Response(
+        answer: selectedOption,
+        timeTaken: _timeTakenForCurrentQuestion(),
+      );
 
       // record the state of answered question in actions list
       currentExamResult!.actions.add(
         Action(
           currentExam!.questions[questionIndex].answer == selectedOption
-              ? Actions.questionAnsweredCorrectly
-              : Actions.questionAnsweredWrongly,
+              ? Actions.currectOptionSelected
+              : Actions.wrongOptionSelected,
           details: "{questionIndex:$questionIndex}",
         ),
       );
-
-      // Update the ExamResult provider
-      notifyListeners();
     } catch (e) {
       reset();
       rethrow;
     }
+  }
+
+  void movingToNextQuestion(int currentQuestionIndex, int nextQuestionIndex) {
+    // Check if the current question is answered or Skipped
+    currentExamResult!.actions.addAll([
+      // Record the action that the current question is answered or Skipped
+      Action(
+        currentExamResult!.response[currentQuestionIndex] != null
+            ? Actions.questionAnswered
+            : Actions.questionSkipped,
+        details: "{questionIndex:$currentQuestionIndex}",
+      ),
+      // Record action in action list that the next question is shown
+      if (nextQuestionIndex >= currentExam!.questions.length)
+        Action(
+          Actions.questionShowed,
+          details: "{questionIndex:$nextQuestionIndex}",
+        ),
+    ]);
   }
 
   void examCompleted() {
@@ -174,10 +208,7 @@ class ExamProvider extends ChangeNotifier {
 
         // save the exam result in firestore
         _firestore
-            .collection('Institute')
-            .doc(instituteId)
-            .collection('Exams')
-            .doc(currentExam?.id)
+            .doc(currentExamPath!)
             .collection('Results')
             .add(currentExamResult!.toMap())
             .then(

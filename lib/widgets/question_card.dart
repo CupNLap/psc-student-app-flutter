@@ -7,7 +7,7 @@ import 'package:student/provider/exam_provider.dart';
 class QuestionCard extends StatelessWidget {
   QuestionCard({
     super.key,
-    this.question,
+    this.question,  // TODO - Found that this is not used
     this.questionIndex,
   }) {
     assert(question == null || questionIndex == null,
@@ -19,7 +19,7 @@ class QuestionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get the question object based on the available information
+    // Get the question object based on the available information either index or question
     Question questionObject;
     if (question != null) {
       questionObject = question!;

@@ -23,16 +23,17 @@ class QuizScreen extends StatefulWidget {
 class _QuizScreenState extends State<QuizScreen> {
   Exam? exam;
   int currentQuestionIndex = 0;
+  late final ExamProvider _examProvider;
 
   @override
   void initState() {
     super.initState();
 
-    ExamProvider provider = Provider.of<ExamProvider>(context, listen: false);
+    _examProvider = Provider.of<ExamProvider>(context, listen: false);
 
-    provider.getExam(widget.quizRef!.path).then((value) => {
+    _examProvider.getExam(widget.quizRef!.path).then((value) => {
           // inform the provider about the exam is started
-          provider.examStarted(),
+          _examProvider.examStarted(),
           // update the exam value
           setState(() => exam = value),
         });
@@ -51,7 +52,7 @@ class _QuizScreenState extends State<QuizScreen> {
       // TODO - Add results to the exam
       // Navigator.pushNamed(context, '/result');
 
-      Provider.of<ExamProvider>(context, listen: false).examCompleted();
+      _examProvider.examCompleted();
 
       Navigator.pop(context);
 
@@ -59,9 +60,9 @@ class _QuizScreenState extends State<QuizScreen> {
           MaterialPageRoute(builder: (context) => const ResultsScreen()));
     } else {
       // Move to next question
-      setState(() {
-        currentQuestionIndex++;
-      });
+      _examProvider.movingToNextQuestion(
+          currentQuestionIndex, currentQuestionIndex++);
+      setState(() {});
     }
   }
 

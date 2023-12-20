@@ -4,14 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student/model/batch.dart';
-import 'package:student/pages/home_screen.dart';
 
-extension QRCodeValidator on String {
-  bool isValidJoiningQRCode() {
-    return RegExp(r'^([^/]+)/([^/]+)$').hasMatch(this);
-  }
+bool isValidJoiningQRCode(s) {
+  return RegExp(r'^([^/]+)/([^/]+)$').hasMatch(s);
 }
 
 class BatchJoinPage extends StatefulWidget {
@@ -54,7 +50,7 @@ class _BatchJoinPageState extends State<BatchJoinPage> {
                 '#ff6666', 'Cancel', true, ScanMode.QR)
             .then((barcodeScanRes) {
           // validate the barcodeScanRes contains two strings separated by '/' using regex
-          if (barcodeScanRes.isValidJoiningQRCode()) {
+          if (isValidJoiningQRCode(barcodeScanRes)) {
             // Join the specific batch
             var ids = barcodeScanRes.split('/');
 

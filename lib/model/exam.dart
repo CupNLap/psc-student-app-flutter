@@ -97,10 +97,12 @@ class ExamResult {
 enum Actions {
   examStarted,
   examEnded,
-  questionSkipped,
-  questionTimedOut,
-  questionAnsweredCorrectly,
-  questionAnsweredWrongly,
+  questionShowed, // Appeared in the screen
+  questionSkipped, // Disappeared from the screen
+  questionAnswered, // Disappeared from the screen
+  questionTimedOut, // Disappeared from the screen
+  currectOptionSelected,
+  wrongOptionSelected,
   answerReviewStarted,
   answerReviewEnded,
 }
