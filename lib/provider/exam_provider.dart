@@ -148,7 +148,7 @@ class ExamProvider extends ChangeNotifier {
         details: "{questionIndex:$currentQuestionIndex}",
       ),
       // Record action in action list that the next question is shown
-      if (nextQuestionIndex >= currentExam!.questions.length)
+      if (nextQuestionIndex < currentExam!.questions.length)
         Action(
           Actions.questionShowed,
           details: "{questionIndex:$nextQuestionIndex}",

@@ -150,6 +150,11 @@ class Action {
       'details': details,
     };
   }
+
+  @override
+  String toString() {
+    return 'Action(timeStamp: $timeStamp, action: $action, details: $details)';
+  }
 }
 
 /// Response Model
