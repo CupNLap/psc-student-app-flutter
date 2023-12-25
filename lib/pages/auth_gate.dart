@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:student/pages/home_screen.dart';
 import 'package:student/pages/sign_up.dart';
+import 'package:version_gate/version_gate.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
@@ -11,8 +12,6 @@ class AuthGate extends StatelessWidget {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        // TODO - make sure the phone number is linked
-        // || snapshot.data?.phoneNumber != null
         if (!snapshot.hasData) {
           return const SignUpPage();
         }
@@ -21,7 +20,15 @@ class AuthGate extends StatelessWidget {
         //   return const GoogleSignIn();
         // }
 
-        return const MyHomePage(title: 'Alchemist Bathery');
+        return FireStoreVersionGate(
+          docPath: 'AppDetails/version',
+          expiredField: "studentExpired",
+          latestField: "studentLatest",
+          version: 0.0,
+          updateUrl: Uri.parse(
+              "https://play.google.com/store/apps/details?id=com.alchemistbathery.student"),
+          child: const MyHomePage(title: 'Alchemist Bathery'),
+        );
       },
     );
   }
