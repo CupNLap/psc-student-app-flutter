@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:student/model/batch.dart';
+import 'package:student/pages/quiz_screen.dart';
 
 class ExamItem extends StatelessWidget {
   const ExamItem(
     this.exam, {
+    this.disabled = false,
     super.key,
   });
 
   final BatchExam exam;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +18,8 @@ class ExamItem extends StatelessWidget {
     final String formattedTime =
         '${dateTime.day}/${dateTime.month}/${dateTime.year} ${dateTime.hour}:${dateTime.minute}';
 
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Padding(
+    Widget _buildContents() {
+      return Padding(
         padding: const EdgeInsets.all(16.0),
         child: IntrinsicHeight(
           child: Row(
@@ -64,7 +63,45 @@ class ExamItem extends StatelessWidget {
             ],
           ),
         ),
+      );
+    }
+
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
       ),
+      child: InkWell(
+          onTap: disabled
+              ? null
+              : () => {
+                    showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        content: Text(
+                            'Are ready to attempt the exam - "${exam.name}"?'),
+                        actions: [
+                          TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text("Cancel")),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      QuizScreen(quizRef: exam.ref),
+                                ),
+                              );
+                            },
+                            child: const Text("OK"),
+                          ),
+                        ],
+                      ),
+                    ),
+                  },
+          child: _buildContents()),
     );
   }
 }

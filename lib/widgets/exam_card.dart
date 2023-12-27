@@ -5,9 +5,11 @@ import 'package:student/pages/quiz_screen.dart';
 // Define the ExamCard widget
 class ExamCard extends StatelessWidget {
   final BatchExam exam;
+  final bool disabled;
 
   const ExamCard(
     this.exam, {
+    this.disabled = false,
     Key? key,
   }) : super(key: key);
 
@@ -23,31 +25,35 @@ class ExamCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: InkWell(
-        onTap: () => {
-          showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              content: Text('Are ready to attempt the exam - "${exam.name}"?'),
-              actions: [
-                TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text("Cancel")),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QuizScreen(quizRef: exam.ref),
-                      ),
-                    );
-                  },
-                  child: const Text("OK"),
-                ),
-              ],
-            ),
-          ),
-        },
+        onTap: disabled
+            ? null // Clicking is disabled
+            : () => {
+                  showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      content: Text(
+                          'Are ready to attempt the exam - "${exam.name}"?'),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text("Cancel")),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    QuizScreen(quizRef: exam.ref),
+                              ),
+                            );
+                          },
+                          child: const Text("OK"),
+                        ),
+                      ],
+                    ),
+                  ),
+                },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(

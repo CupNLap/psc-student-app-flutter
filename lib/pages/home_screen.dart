@@ -126,20 +126,17 @@ class _MyHomePageState extends State<MyHomePage> {
             Text("Ongoing Exams",
                 style: Theme.of(context).textTheme.titleMedium),
             AspectRatio(
-              aspectRatio: 16 / 9,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ongoingExam.isEmpty
-                      ? const Text("No Exams")
-                      : AspectRatio(
-                          aspectRatio: 16 / 9,
-                          child: ExamItem(ongoingExam),
-                        ),
-                ],
-              ),
-            ),
+                aspectRatio: 16 / 9,
+                child: expiredExams.isEmpty
+                    ? const Center(child: Text("No Exams Running Now"))
+                    : ExamItem(expiredExams.first, disabled: false)),
+
+            // Upcomming Exams
+            // Vertical Scroll Section
+            const SizedBox(height: 20.0),
+            Text("Upcomming Exams",
+                style: Theme.of(context).textTheme.titleMedium),
+            ...upcommingExams.map((exam) => ExamItem(exam, disabled: true)),
 
             // Expired Exams
             // Horizontal Scroll Section
@@ -147,23 +144,16 @@ class _MyHomePageState extends State<MyHomePage> {
             Text("Expired Exams",
                 style: Theme.of(context).textTheme.titleMedium),
             SizedBox(
-              height: MediaQuery.of(context).size.width / 2.8 * 1.6,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: expiredExams.length,
-                itemBuilder: (context, index) => SizedBox(
-                  width: MediaQuery.of(context).size.width / 2.8,
-                  child: ExamCard(expiredExams[index]),
-                ),
-              ),
-            ),
-
-            // Upcomming Exams
-            // Vertical Scroll Section
-            const SizedBox(height: 20.0),
-            Text("Upcomming Exams",
-                style: Theme.of(context).textTheme.titleMedium),
-            ...upcommingExams.map((exam) => ExamItem(exam))
+                height: MediaQuery.of(context).size.width / 2.8 * 1.6,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: expiredExams.length,
+                    itemBuilder: (context, index) => SizedBox(
+                        width: MediaQuery.of(context).size.width / 2.8,
+                        child: ExamCard(
+                          expiredExams[index],
+                          disabled: true,
+                        )))),
           ],
         ),
       ),
