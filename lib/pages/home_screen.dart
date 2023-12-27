@@ -127,9 +127,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: Theme.of(context).textTheme.titleMedium),
             AspectRatio(
                 aspectRatio: 16 / 9,
-                child: expiredExams.isEmpty
+                child: ongoingExam.isEmpty
                     ? const Center(child: Text("No Exams Running Now"))
-                    : ExamItem(expiredExams.first, disabled: false)),
+                    : ExamItem(ongoingExam, disabled: false)),
 
             // Upcomming Exams
             // Vertical Scroll Section
