@@ -49,6 +49,7 @@ dependencies:
 
   version_gate:
     path: ../../../Works/Flutter Project/packages/version_gate
+  google_mobile_ads: ^4.0.0
 
 dev_dependencies:
   flutter_test:

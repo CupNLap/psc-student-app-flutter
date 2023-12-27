@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:student/monetization/google_admob/banners.dart';
 import 'package:student/pages/result_screen.dart';
 import 'package:student/provider/exam_provider.dart';
 import 'package:student/widgets/ads/banner.dart';
@@ -89,7 +90,8 @@ class _QuizScreenState extends State<QuizScreen> {
                       height: 0,
                     ),
                   ),
-                  const AdBanner(),
+                  const GoogleBannerAd(),
+                  // const AdBanner(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: QuestionCard(questionIndex: currentQuestionIndex),
