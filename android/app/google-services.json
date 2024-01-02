@@ -1,34 +1,57 @@
 {
   "project_info": {
-    "project_number": "60907112844",
-    "project_id": "psc-app-develop",
-    "storage_bucket": "psc-app-develop.appspot.com"
+    "project_number": "84656227361",
+    "project_id": "alchemist-bathery",
+    "storage_bucket": "alchemist-bathery.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:60907112844:android:feb89ea03237820bcaeea9",
+        "mobilesdk_app_id": "1:84656227361:android:9183448bdeb81edb9bcf60",
         "android_client_info": {
-          "package_name": "com.example.institute"
+          "package_name": "com.alchemist.institute"
         }
       },
       "oauth_client": [
         {
-          "client_id": "60907112844-584k7p0r0e1ioopmn599nksthlcamm0f.apps.googleusercontent.com",
+          "client_id": "84656227361-98jf42t9cuahhfidgabd5ngk44b97i7i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alchemist.institute",
+            "certificate_hash": "2b05e6eb5493e4fe64d9b3baa66a03c5bb5985f3"
+          }
+        },
+        {
+          "client_id": "84656227361-naa6oeo4lorb05c904sqn8vto5n9cstg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alchemist.institute",
+            "certificate_hash": "da3f165d15b16f275b7cb5a3ab651f6e3c656d37"
+          }
+        },
+        {
+          "client_id": "84656227361-ra1ec5jamig3a25j19g4j167fklqkg8t.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB7LvpHUOr8utXvKeF0fYZqCmGTl37tqag"
+          "current_key": "AIzaSyBrqm8aZcC8lO8UZp3rXatPnJkcxXSVzAg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "60907112844-584k7p0r0e1ioopmn599nksthlcamm0f.apps.googleusercontent.com",
+              "client_id": "84656227361-ra1ec5jamig3a25j19g4j167fklqkg8t.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "84656227361-fs5untf7shtrt7okuuauked8vahsh6k3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.institute"
+              }
             }
           ]
         }
@@ -36,28 +59,87 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:60907112844:android:09427895ca9da829caeea9",
+        "mobilesdk_app_id": "1:84656227361:android:a6e7f68c72ae6aff9bcf60",
         "android_client_info": {
-          "package_name": "com.example.student"
+          "package_name": "com.alchemist.student"
         }
       },
       "oauth_client": [
         {
-          "client_id": "60907112844-584k7p0r0e1ioopmn599nksthlcamm0f.apps.googleusercontent.com",
+          "client_id": "84656227361-l9vjfc5no5dm5m73job8hq0amh543n8q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alchemist.student",
+            "certificate_hash": "8218255a1037687210ad93968006de7e6e7a305e"
+          }
+        },
+        {
+          "client_id": "84656227361-v519f9g3ol24mqst60gn596du0o3530v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alchemist.student",
+            "certificate_hash": "2b05e6eb5493e4fe64d9b3baa66a03c5bb5985f3"
+          }
+        },
+        {
+          "client_id": "84656227361-ra1ec5jamig3a25j19g4j167fklqkg8t.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB7LvpHUOr8utXvKeF0fYZqCmGTl37tqag"
+          "current_key": "AIzaSyBrqm8aZcC8lO8UZp3rXatPnJkcxXSVzAg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "60907112844-584k7p0r0e1ioopmn599nksthlcamm0f.apps.googleusercontent.com",
+              "client_id": "84656227361-ra1ec5jamig3a25j19g4j167fklqkg8t.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "84656227361-fs5untf7shtrt7okuuauked8vahsh6k3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.institute"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84656227361:android:aa0d2220d7492f789bcf60",
+        "android_client_info": {
+          "package_name": "com.cupnlap.psc_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "84656227361-ra1ec5jamig3a25j19g4j167fklqkg8t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrqm8aZcC8lO8UZp3rXatPnJkcxXSVzAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "84656227361-ra1ec5jamig3a25j19g4j167fklqkg8t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "84656227361-fs5untf7shtrt7okuuauked8vahsh6k3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.institute"
+              }
             }
           ]
         }
