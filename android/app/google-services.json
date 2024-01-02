@@ -1,26 +1,65 @@
 {
   "project_info": {
-    "project_number": "84656227361",
-    "project_id": "alchemist-bathery",
-    "storage_bucket": "alchemist-bathery.appspot.com"
+    "project_number": "60907112844",
+    "project_id": "psc-app-develop",
+    "storage_bucket": "psc-app-develop.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:84656227361:android:b831659844a7300e9bcf60",
+        "mobilesdk_app_id": "1:60907112844:android:feb89ea03237820bcaeea9",
         "android_client_info": {
-          "package_name": "com.example.student"
+          "package_name": "com.example.institute"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "60907112844-584k7p0r0e1ioopmn599nksthlcamm0f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyBrqm8aZcC8lO8UZp3rXatPnJkcxXSVzAg"
+          "current_key": "AIzaSyB7LvpHUOr8utXvKeF0fYZqCmGTl37tqag"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "60907112844-584k7p0r0e1ioopmn599nksthlcamm0f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60907112844:android:09427895ca9da829caeea9",
+        "android_client_info": {
+          "package_name": "com.example.student"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "60907112844-584k7p0r0e1ioopmn599nksthlcamm0f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7LvpHUOr8utXvKeF0fYZqCmGTl37tqag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "60907112844-584k7p0r0e1ioopmn599nksthlcamm0f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

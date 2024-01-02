@@ -17,13 +17,19 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -46,30 +52,11 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBFTMERuaD0VIPPVwODUuUT3--uzfP27P4',
-    appId: '1:84656227361:web:a2596488b9445def9bcf60',
-    messagingSenderId: '84656227361',
-    projectId: 'alchemist-bathery',
-    authDomain: 'alchemist-bathery.firebaseapp.com',
-    storageBucket: 'alchemist-bathery.appspot.com',
-    measurementId: 'G-753HPMX913',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBrqm8aZcC8lO8UZp3rXatPnJkcxXSVzAg',
-    appId: '1:84656227361:android:b831659844a7300e9bcf60',
-    messagingSenderId: '84656227361',
-    projectId: 'alchemist-bathery',
-    storageBucket: 'alchemist-bathery.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBbft0mqyCva9cID3UjnGg3PhqtoUkEnl8',
-    appId: '1:84656227361:ios:ef7477eb6a3adfa19bcf60',
-    messagingSenderId: '84656227361',
-    projectId: 'alchemist-bathery',
-    storageBucket: 'alchemist-bathery.appspot.com',
-    iosBundleId: 'com.example.student',
+    apiKey: 'AIzaSyB7LvpHUOr8utXvKeF0fYZqCmGTl37tqag',
+    appId: '1:60907112844:android:09427895ca9da829caeea9',
+    messagingSenderId: '60907112844',
+    projectId: 'psc-app-develop',
+    storageBucket: 'psc-app-develop.appspot.com',
   );
 }
