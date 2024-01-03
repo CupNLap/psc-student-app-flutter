@@ -90,8 +90,10 @@ class ExamItem extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      ExamScreen(examRef: exam.ref),
+                                  builder: (context) => ExamScreen(
+                                    examRef: exam.ref,
+                                    time: exam.time,
+                                  ),
                                 ),
                               );
                             },

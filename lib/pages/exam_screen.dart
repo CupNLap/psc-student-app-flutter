@@ -6,6 +6,7 @@ import 'package:student/monetization/google_admob/banners.dart';
 import 'package:student/pages/result_screen.dart';
 
 import 'package:student/provider/exam_provider.dart';
+import 'package:student/widgets/exam/timer.dart';
 
 import '../model/exam.dart';
 import '../widgets/exam/question/question_item.dart';
@@ -14,9 +15,11 @@ class ExamScreen extends StatefulWidget {
   const ExamScreen({
     super.key,
     required this.examRef,
+    this.time,
   });
 
   final DocumentReference? examRef;
+  final int? time;
 
   @override
   State<ExamScreen> createState() => _ExamScreenState();
@@ -53,8 +56,8 @@ class _ExamScreenState extends State<ExamScreen> {
                 SliverPersistentHeader(
                   pinned: true,
                   delegate: MyStickyHeaderDelegate(
-                    minHeight: 100.0,
-                    maxHeight: 150.0,
+                    minHeight: 150.0,
+                    maxHeight: 250.0,
                     child: Container(
                       color: Colors.grey[200],
                       child: Column(
@@ -62,6 +65,13 @@ class _ExamScreenState extends State<ExamScreen> {
                           children: [
                             Text(exam!.name,
                                 style: const TextStyle(fontSize: 24.0)),
+                            TimerWidget(
+                                // Get the time from Parent widget, If there is no time available then set it to 75% of length of the exam as minutes
+                                minutes: widget.time ??
+                                    exam!.questions.length * 0.75 ~/ 1,
+                                onTimerOver: () {
+                                  _handleExamSubmit();
+                                }),
                             const GoogleBannerAd(),
                             Text(exam!.code,
                                 style: const TextStyle(fontSize: 12.0)),
