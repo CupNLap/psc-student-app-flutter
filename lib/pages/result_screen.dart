@@ -39,7 +39,7 @@ class ResultsScreen extends StatelessWidget {
               style: const TextStyle(fontSize: 20),
             ),
             _buildQuestionListByType(
-                "Currect Answers", analysis['correctAnswers']!),
+                "Right Answers", analysis['correctAnswers']!),
             _buildQuestionListByType(
                 "Wrong Answers", analysis['wrongAnswers']!),
             _buildQuestionListByType(

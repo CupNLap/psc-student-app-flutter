@@ -46,7 +46,7 @@ class Exam {
 
 class ExamResult {
   String userName;
-  String userId;
+  DocumentReference userRef;
   Timestamp startAt;
   Map<int, Response> response = {};
   List<Action> actions = [];
@@ -57,7 +57,7 @@ class ExamResult {
   // A constructor for the examresult class
   ExamResult({
     required this.userName,
-    required this.userId,
+    required this.userRef,
     required this.startAt,
     required this.response,
     required this.actions,
@@ -68,14 +68,14 @@ class ExamResult {
 
   ExamResult.essentials({
     required this.userName,
-    required this.userId,
+    required this.userRef,
     required this.startAt,
   });
 
   factory ExamResult.fromFirestore(DocumentSnapshot snap) {
     return ExamResult(
       userName: snap.get('userName'),
-      userId: snap.get('userId'),
+      userRef: snap.get('userRef'),
       startAt: snap.get('startAt'),
       response: snap.get('response'),
       actions: snap.get('actions'),
@@ -88,7 +88,7 @@ class ExamResult {
   Map<String, dynamic> toMap() {
     return {
       'userName': userName,
-      'userId': userId,
+      'userRef': userRef,
       'startAt': startAt,
       'response': {
         for (final entry in response.entries)
@@ -109,7 +109,7 @@ enum Actions {
   questionSkipped, // Disappeared from the screen
   questionAnswered, // Disappeared from the screen
   questionTimedOut, // Disappeared from the screen
-  currectOptionSelected,
+  rightOptionSelected,
   wrongOptionSelected,
   answerReviewStarted,
   answerReviewEnded,

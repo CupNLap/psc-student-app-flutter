@@ -50,8 +50,7 @@ class _ExamScreenState extends State<ExamScreen> {
     return RestrictPop(
       title: "You can't leave exam before completion",
       content: "Please make sure that you have completed the exam before leaving it.",
-      negativeActionText: "Submit Exam",
-      onNegativeAction: _handleExamSubmit,
+      negativeActionText: "OK",
       positiveActionText: "Continue",
       child: Scaffold(
         body: exam == null
