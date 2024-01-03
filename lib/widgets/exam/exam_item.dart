@@ -38,7 +38,7 @@ class ExamItem extends StatelessWidget {
                   const Spacer(),
                   const SizedBox(height: 16.0),
                   Text(
-                    '${(exam.time / 60).floor()} minutes\n${exam.time % 60} seconds',
+                    '${exam.time} minutes',
                     style: Theme.of(context).textTheme.bodySmall,
                   )
                 ],

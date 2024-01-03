@@ -64,6 +64,8 @@ class Batch {
   List<DocumentReference> admins; // A list of admins of this batch
   List<DocumentReference> students; // A list of students in the batch
   List<BatchExam> exams; // A list of students in the batch
+  List<DocumentReference>
+      restrictedStudentsFromExam; // A list of students in the batch that is restricted from attempting exams
 
   // A constructor for the batch class
   Batch({
@@ -72,6 +74,7 @@ class Batch {
     this.students = const [],
     this.admins = const [],
     this.exams = const [],
+    this.restrictedStudentsFromExam = const [],
   });
 
   factory Batch.empty() {
@@ -89,6 +92,8 @@ class Batch {
         List<DocumentReference>.from(snap.get('admins'));
     List<DocumentReference> studentRefs =
         List<DocumentReference>.from(snap.get('students'));
+    List<DocumentReference> restrictedStudentsFromExam =
+        List<DocumentReference>.from(snap.get('restrictedStudentsFromExam'));
 
     return Batch(
       id: snap.id,
@@ -96,6 +101,7 @@ class Batch {
       admins: adminRefs,
       students: studentRefs,
       exams: exams,
+      restrictedStudentsFromExam: restrictedStudentsFromExam,
     );
   }
 
@@ -108,6 +114,8 @@ class Batch {
       'exams': exams.map((ref) => ref).toList(),
       'students': students.map((ref) => ref).toList(),
       'admins': admins.map((ref) => ref).toList(),
+      'restrictedStudentsFromExam':
+          restrictedStudentsFromExam.map((ref) => ref).toList(),
     };
   }
 }
