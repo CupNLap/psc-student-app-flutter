@@ -143,18 +143,20 @@ class SignUpPageState extends State<SignUpPage> {
                       // Sign the user in (or link) with the credential
                       auth.signInWithCredential(credential).then((value) {
                         var user = auth.currentUser!;
-                        user.updateDisplayName(_userNameController.text);
+                        if (user.displayName == null) { // WorkAround - This is a temporary fix for bypassing QR code scaning by Google reviewrs
+                          user.updateDisplayName(_userNameController.text);
 
-                        FirebaseFirestore.instance
-                            .collection("Users")
-                            .doc(user.uid)
-                            .set(
-                              MyUser.User(
-                                      uid: user.uid,
-                                      name: _userNameController.text,
-                                      phone: _phoneNumberController.text)
-                                  .toFirestore(),
-                            );
+                          FirebaseFirestore.instance
+                              .collection("Users")
+                              .doc(user.uid)
+                              .set(
+                                MyUser.User(
+                                        uid: user.uid,
+                                        name: _userNameController.text,
+                                        phone: _phoneNumberController.text)
+                                    .toFirestore(),
+                              );
+                        }
                       });
                       setState(() => currentState = SigningState.loading);
                     }
