@@ -98,7 +98,7 @@ class QuestionView extends StatelessWidget {
 }
 
 class OptionsView extends StatefulWidget {
-  final Set<String> options;
+  final List<String> options;
   final Function(String) onOptionSelected;
 
   const OptionsView(

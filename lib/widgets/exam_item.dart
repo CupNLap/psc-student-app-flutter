@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student/model/batch.dart';
-import 'package:student/pages/quiz_screen.dart';
+import 'package:student/pages/exam_screen.dart';
 
 class ExamItem extends StatelessWidget {
   const ExamItem(
@@ -79,7 +79,7 @@ class ExamItem extends StatelessWidget {
                       context: context,
                       builder: (_) => AlertDialog(
                         content: Text(
-                            'Are ready to attempt the exam - "${exam.name}"?'),
+                            'Are you ready to attempt the exam - "${exam.name}"?'),
                         actions: [
                           TextButton(
                               onPressed: () => Navigator.pop(context),
@@ -91,7 +91,7 @@ class ExamItem extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      QuizScreen(quizRef: exam.ref),
+                                      ExamScreen(examRef: exam.ref),
                                 ),
                               );
                             },
