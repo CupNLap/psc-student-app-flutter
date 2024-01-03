@@ -55,7 +55,7 @@ class _QuestionViewState extends State<QuestionView> {
             GestureDetector(
               onTap: () {
                 if (widget.onOptionSelected != null &&
-                    (widget.selectOptionsOnlyOnce ||
+                    (!widget.selectOptionsOnlyOnce ||
                         _currentSelectedOption == null)) {
                   setState(() {
                     _currentSelectedOption = widget.question.options[i];
