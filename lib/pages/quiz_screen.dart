@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:student/monetization/google_admob/banners.dart';
 import 'package:student/pages/result_screen.dart';
 import 'package:student/provider/exam_provider.dart';
-import 'package:student/widgets/ads/banner.dart';
 import 'package:student/widgets/question_card.dart';
 
 import '../model/exam.dart';
@@ -43,6 +42,8 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void dispose() {
     super.dispose();
+
+    // TODO - handle this , record the user action in actions for results
   }
 
   void _handleNextClick() {

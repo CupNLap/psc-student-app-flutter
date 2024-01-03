@@ -73,8 +73,18 @@ class _ExamScreenState extends State<ExamScreen> {
                         (context, index) => QuestionView(
                               exam!.questions[index],
                               title: 'Question - ${index + 1}',
+                              selectedOption: exam!.questions[index].options[3],
+                              showAnswers: true,
+                              // onOptionSelected: (option) {
+                              //   // setState(() => exam!
+                              //   //     .questions[index].selectedOption = option);
+                              // },
                             ),
-                        childCount: exam!.questions.length))
+                        childCount: exam!.questions.length)),
+                SliverToBoxAdapter(
+                    child: ElevatedButton(
+                        onPressed: () {},
+                        child: const Text("Submit the Exam"))),
               ],
             )),
     );
@@ -85,11 +95,25 @@ class QuestionView extends StatefulWidget {
   const QuestionView(
     this.question, {
     this.title = "",
+    this.showAnswers = false,
+    this.selectedOption,
+    this.onOptionSelected,
     super.key,
-  });
+  })  : assert(
+          onOptionSelected == null ||
+              (showAnswers == false && selectedOption == null),
+          'showAnswers and selectedOptions should not be provided if onOptionSelected is provided',
+        ),
+        assert(
+          selectedOption == null || showAnswers == true,
+          'If selectedOption is provided, the showAnswers should be true',
+        );
 
   final Question question;
   final String title;
+  final bool showAnswers;
+  final String? selectedOption;
+  final Function(String option)? onOptionSelected;
 
   @override
   State<QuestionView> createState() => _QuestionViewState();
@@ -111,30 +135,34 @@ class _QuestionViewState extends State<QuestionView> {
           // Options
           for (int i = 0; i < widget.question.options.length; i++)
             Card(
-              color: widget.question.answer == widget.question.options[i]
+              color: widget.question.answer == widget.question.options[i] &&
+                      widget.showAnswers
                   ? Colors.green[50]
                   : Colors.white,
               clipBehavior: Clip.antiAlias,
               child: Container(
                 width: double.maxFinite,
-                decoration: widget.question.answer == widget.question.options[i]
-                    ? const BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Colors.green, // Customize the color here
-                            width: 10.0, // Adjust the width as needed
-                          ),
-                        ),
-                      )
-                    : null,
+                decoration:
+                    widget.question.answer == widget.question.options[i] &&
+                            widget.showAnswers
+                        ? const BoxDecoration(
+                            border: Border(
+                              left: BorderSide(
+                                color: Colors.green, // Customize the color here
+                                width: 10.0, // Adjust the width as needed
+                              ),
+                            ),
+                          )
+                        : null,
                 padding: const EdgeInsets.all(12.0),
                 child: Text(
                   widget.question.options[i],
                   style: TextStyle(
-                      color:
-                          widget.question.options[i] == widget.question.answer
-                              ? Colors.green
-                              : Colors.grey),
+                      color: widget.showAnswers &&
+                              widget.question.options[i] ==
+                                  widget.question.answer
+                          ? Colors.green
+                          : Colors.grey),
                 ),
               ),
             ),
