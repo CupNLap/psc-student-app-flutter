@@ -68,20 +68,24 @@ class _QuestionViewState extends State<QuestionView> {
                         widget.showAnswers
                     ? Colors.green[50]
                     : _currentSelectedOption == widget.question.options[i]
-                        ? Colors.blue[50] // Highlight selected option
+                        ? Colors.blue[50] // Highlight selected option in blue
                         : Colors.white,
                 clipBehavior: Clip.antiAlias,
                 child: Container(
                   width: double.maxFinite,
-                  decoration:
-                      widget.question.answer == widget.question.options[i] &&
-                              widget.showAnswers
+                  decoration: widget.question.answer ==
+                              widget.question.options[i] &&
+                          widget.showAnswers
+                      ? const BoxDecoration(
+                          border: Border(
+                            left: BorderSide(color: Colors.green, width: 10.0),
+                          ),
+                        )
+                      : _currentSelectedOption == widget.question.options[i]
                           ? const BoxDecoration(
                               border: Border(
-                                left: BorderSide(
-                                  color: Colors.green,
-                                  width: 10.0,
-                                ),
+                                left:
+                                    BorderSide(color: Colors.blue, width: 10.0),
                               ),
                             )
                           : null,
@@ -93,7 +97,9 @@ class _QuestionViewState extends State<QuestionView> {
                           ? widget.question.options[i] == widget.question.answer
                               ? Colors.green
                               : Colors.grey
-                          : Colors.black,
+                          : _currentSelectedOption == widget.question.options[i]
+                              ? Colors.blue
+                              : Colors.black,
                     ),
                   ),
                 ),
