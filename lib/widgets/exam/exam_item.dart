@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student/model/batch.dart';
-import 'package:student/pages/quiz_screen.dart';
+import 'package:student/pages/exam_screen.dart';
 
 class ExamItem extends StatelessWidget {
   const ExamItem(
@@ -38,7 +38,7 @@ class ExamItem extends StatelessWidget {
                   const Spacer(),
                   const SizedBox(height: 16.0),
                   Text(
-                    '${(exam.time / 60).floor()} minutes\n${exam.time % 60} seconds',
+                    '${exam.time} minutes',
                     style: Theme.of(context).textTheme.bodySmall,
                   )
                 ],
@@ -79,7 +79,7 @@ class ExamItem extends StatelessWidget {
                       context: context,
                       builder: (_) => AlertDialog(
                         content: Text(
-                            'Are ready to attempt the exam - "${exam.name}"?'),
+                            'Are you ready to attempt the exam - "${exam.name}"?'),
                         actions: [
                           TextButton(
                               onPressed: () => Navigator.pop(context),
@@ -90,8 +90,10 @@ class ExamItem extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      QuizScreen(quizRef: exam.ref),
+                                  builder: (context) => ExamScreen(
+                                    examRef: exam.ref,
+                                    time: exam.time,
+                                  ),
                                 ),
                               );
                             },

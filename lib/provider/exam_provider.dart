@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:student/gobal/constants.dart';
 import 'package:student/model/question.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/exam.dart';
 
@@ -84,7 +84,7 @@ class ExamProvider extends ChangeNotifier {
   void examStarted() {
     currentExamResult = ExamResult.essentials(
       userName: auth.currentUser!.displayName!,
-      userId: auth.currentUser!.uid,
+      userRef: currentUserRef,
       startAt: Timestamp.now(),
     );
 
@@ -111,7 +111,11 @@ class ExamProvider extends ChangeNotifier {
     return timeTaken;
   }
 
-  void optionsSelected(int questionIndex, String selectedOption) {
+  // Get the selected Option by index
+  String? getSelectedOptionAtIndex(int questionIndex) =>
+      currentExamResult!.response[questionIndex]?.answer;
+
+  void setTheSelectedOptionAtIndex(int questionIndex, String selectedOption) {
     try {
       if (currentExamResult == null) {
         examStarted();
@@ -127,7 +131,7 @@ class ExamProvider extends ChangeNotifier {
       currentExamResult!.actions.add(
         Action(
           currentExam!.questions[questionIndex].answer == selectedOption
-              ? Actions.currectOptionSelected
+              ? Actions.rightOptionSelected
               : Actions.wrongOptionSelected,
           details: "{questionIndex:$questionIndex}",
         ),

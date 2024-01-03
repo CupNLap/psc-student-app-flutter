@@ -46,7 +46,7 @@ class QuestionCard extends StatelessWidget {
               questionObject.options,
               onOptionSelected: (selectedOption) {
                 Provider.of<ExamProvider>(context, listen: false)
-                    .optionsSelected(questionIndex!, selectedOption);
+                    .setTheSelectedOptionAtIndex(questionIndex!, selectedOption);
               },
             ),
           ],
@@ -98,7 +98,7 @@ class QuestionView extends StatelessWidget {
 }
 
 class OptionsView extends StatefulWidget {
-  final Set<String> options;
+  final List<String> options;
   final Function(String) onOptionSelected;
 
   const OptionsView(

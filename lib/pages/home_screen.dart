@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:student/gobal/constants.dart';
 
 import 'package:student/model/batch.dart';
 import 'package:student/pages/batch_join_page.dart';
 import 'package:student/provider/user_provider.dart';
-import 'package:student/widgets/exam_item.dart';
+import 'package:student/widgets/exam/exam_item.dart';
 import 'package:student/widgets/hero_section.dart';
-import 'package:student/widgets/exam_card.dart';
+import 'package:student/widgets/exam/exam_card.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -68,6 +69,12 @@ class _MyHomePageState extends State<MyHomePage> {
     final BatchExam ongoingExam = batch.exams
         .firstWhere((exam) => exam.isOngoing, orElse: () => BatchExam.empty());
 
+    // Check if the user can access the exam
+    // TODO: Add the logic to check if the user can access the exam
+    // TODO: Check if the user can bypass this when the network is slower, or if the user is offline
+    final bool _canAccessExam =
+        !batch.restrictedStudentsFromExam.contains(currentUserRef);
+
     // Home Screen of the studnet app that shows the exam list of the batch
     return Scaffold(
       // App bar containing the batch name and sign out feature
@@ -120,16 +127,25 @@ class _MyHomePageState extends State<MyHomePage> {
             // Notice Card
             const HeroSection(),
 
+            // Notifications
+            const SizedBox(height: 20.0),
+            Text(
+              !_canAccessExam
+                  ? "Oh No! Bad News! \n You can't access the exams please ask your to teacher"
+                  : "No Notifications for you",
+            ),
+
             // Ongoing Exams
             // Single Exam Item
             const SizedBox(height: 20.0),
             Text("Ongoing Exams",
                 style: Theme.of(context).textTheme.titleMedium),
+
             AspectRatio(
                 aspectRatio: 16 / 9,
                 child: ongoingExam.isEmpty
                     ? const Center(child: Text("No Exams Running Now"))
-                    : ExamItem(ongoingExam, disabled: false)),
+                    : ExamItem(ongoingExam, disabled: !_canAccessExam)),
 
             // Upcomming Exams
             // Vertical Scroll Section

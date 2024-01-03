@@ -6,7 +6,7 @@ class Question {
   String question;
   QuestionType type;
   int timer;
-  Set<String> options;
+  List<String> options;
   String answer;
   Set<String> topics;
   String? selectedOption;
@@ -40,7 +40,7 @@ class Question {
     return Question(
       question: map['question'],
       timer: map['timer'],
-      options: {...map['options']},
+      options: [...map['options']],
       answer: map['answer'],
       topics: {...map['topics']},
     );

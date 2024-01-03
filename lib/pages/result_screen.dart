@@ -39,7 +39,7 @@ class ResultsScreen extends StatelessWidget {
               style: const TextStyle(fontSize: 20),
             ),
             _buildQuestionListByType(
-                "Currect Answers", analysis['correctAnswers']!),
+                "Right Answers", analysis['correctAnswers']!),
             _buildQuestionListByType(
                 "Wrong Answers", analysis['wrongAnswers']!),
             _buildQuestionListByType(
@@ -83,7 +83,7 @@ class ResultsScreen extends StatelessWidget {
   }
 
   Widget _buildOptionList(
-      Set<String> options, String answer, String? selectedOption) {
+      List<String> options, String answer, String? selectedOption) {
     return Column(
       children: options
           .map((option) => _buildOptionItem(option, answer, selectedOption))
