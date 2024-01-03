@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:student/model/question.dart';
 import 'package:student/monetization/google_admob/banners.dart';
+import 'package:student/pages/result_screen.dart';
 
 import 'package:student/provider/exam_provider.dart';
 
@@ -86,11 +86,20 @@ class _ExamScreenState extends State<ExamScreen> {
                         childCount: exam!.questions.length)),
                 SliverToBoxAdapter(
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: _handleExamSubmit,
                         child: const Text("Submit the Exam"))),
               ],
             )),
     );
+  }
+
+  void _handleExamSubmit() {
+    _examProvider.examCompleted();
+
+    Navigator.pop(context);
+
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const ResultsScreen()));
   }
 }
 
