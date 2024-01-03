@@ -111,7 +111,11 @@ class ExamProvider extends ChangeNotifier {
     return timeTaken;
   }
 
-  void optionsSelected(int questionIndex, String selectedOption) {
+  // Get the selected Option by index
+  String? getSelectedOptionAtIndex(int questionIndex) =>
+      currentExamResult!.response[questionIndex]?.answer;
+
+  void setTheSelectedOptionAtIndex(int questionIndex, String selectedOption) {
     try {
       if (currentExamResult == null) {
         examStarted();

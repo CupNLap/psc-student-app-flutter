@@ -46,7 +46,7 @@ class QuestionCard extends StatelessWidget {
               questionObject.options,
               onOptionSelected: (selectedOption) {
                 Provider.of<ExamProvider>(context, listen: false)
-                    .optionsSelected(questionIndex!, selectedOption);
+                    .setTheSelectedOptionAtIndex(questionIndex!, selectedOption);
               },
             ),
           ],

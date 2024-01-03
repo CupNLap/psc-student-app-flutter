@@ -11,17 +11,12 @@ class QuestionView extends StatefulWidget {
     this.selectOptionsOnlyOnce = false,
     super.key,
   })  : assert(
-          onOptionSelected == null ||
-              (showAnswers == false && selectedOption == null),
-          'showAnswers and selectedOptions should not be provided if onOptionSelected is provided',
+          onOptionSelected == null || showAnswers == false,
+          'showAnswers should not be true if onOptionSelected is not null',
         ),
         assert(
           onOptionSelected != null || !selectOptionsOnlyOnce,
           'selectOptionsOnlyOnce should only be provided if onOptionSelected is provided',
-        ),
-        assert(
-          selectedOption == null || showAnswers == true,
-          'If selectedOption is provided, the showAnswers should be true',
         );
 
   final Question question;
@@ -37,6 +32,11 @@ class QuestionView extends StatefulWidget {
 
 class _QuestionViewState extends State<QuestionView> {
   String? _currentSelectedOption;
+  @override
+  void initState() {
+    super.initState();
+    _currentSelectedOption = widget.selectedOption;
+  }
 
   @override
   Widget build(BuildContext context) {
