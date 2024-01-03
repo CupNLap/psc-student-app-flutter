@@ -5,9 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:student/model/batch.dart';
 import 'package:student/pages/batch_join_page.dart';
 import 'package:student/provider/user_provider.dart';
-import 'package:student/widgets/exam_item.dart';
+import 'package:student/widgets/exam/exam_item.dart';
 import 'package:student/widgets/hero_section.dart';
-import 'package:student/widgets/exam_card.dart';
+import 'package:student/widgets/exam/exam_card.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:student/monetization/google_admob/banners.dart';
 import 'package:student/pages/result_screen.dart';
 import 'package:student/provider/exam_provider.dart';
-import 'package:student/widgets/question_card.dart';
+import 'package:student/widgets/exam/question/question_card.dart';
 
 import '../model/exam.dart';
 
