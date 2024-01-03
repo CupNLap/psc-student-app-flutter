@@ -54,14 +54,13 @@ class _QuestionViewState extends State<QuestionView> {
           for (int i = 0; i < widget.question.options.length; i++)
             GestureDetector(
               onTap: () {
-                if (!widget.selectOptionsOnlyOnce ||
-                    _currentSelectedOption == null) {
+                if (widget.onOptionSelected != null &&
+                    (widget.selectOptionsOnlyOnce ||
+                        _currentSelectedOption == null)) {
                   setState(() {
                     _currentSelectedOption = widget.question.options[i];
                   });
-                  if (widget.onOptionSelected != null) {
-                    widget.onOptionSelected!(widget.question.options[i]);
-                  }
+                  widget.onOptionSelected!(widget.question.options[i]);
                 }
               },
               child: Card(

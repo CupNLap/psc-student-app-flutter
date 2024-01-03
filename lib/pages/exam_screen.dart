@@ -74,13 +74,13 @@ class _ExamScreenState extends State<ExamScreen> {
                         (context, index) => QuestionView(
                               exam!.questions[index],
                               title: 'Question - ${index + 1}',
-                              // selectedOption: exam!.questions[index].options[3],
-                              // showAnswers: true,
-                              onOptionSelected: (option) {
-                                // setState(() => exam!
-                                //     .questions[index].selectedOption = option);
-                              },
-                              selectOptionsOnlyOnce: true,
+                              selectedOption: exam!.questions[index].options[3],
+                              showAnswers: true,
+                              // onOptionSelected: (option) {
+                              //   // setState(() => exam!
+                              //   //     .questions[index].selectedOption = option);
+                              // },
+                              // selectOptionsOnlyOnce: true,
                             ),
                         childCount: exam!.questions.length)),
                 SliverToBoxAdapter(
