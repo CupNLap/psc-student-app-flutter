@@ -1,5 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+enum ExamStatus {
+  expired,
+  upcoming,
+  ongoing,
+  unknown,
+}
+
 class BatchExam {
   String name;
   String code;
@@ -56,6 +63,14 @@ class BatchExam {
 
   // Getter method to check if the exam is expired
   bool get isExpired => endAt.toDate().isBefore(DateTime.now());
+
+  ExamStatus get status => isUpcoming
+      ? ExamStatus.upcoming
+      : isExpired
+          ? ExamStatus.expired
+          : isOngoing
+              ? ExamStatus.ongoing
+              : ExamStatus.unknown;
 }
 
 class Batch {
