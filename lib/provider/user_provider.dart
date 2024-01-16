@@ -2,9 +2,31 @@ import 'package:flutter/foundation.dart';
 import 'package:student/gobal/constants.dart';
 import 'package:student/model/user.dart';
 
+/// A class that provides user data and functionality for the application.
+///
+/// This class extends the [ChangeNotifier] class, allowing it to notify listeners
+/// when the user data is updated.
+///
+/// The [UserProvider] class contains a [User] object named 'student' which represents
+/// the current user of the application. The initial value of 'student' is an empty
+/// [User] object.
+///
 class UserProvider extends ChangeNotifier {
   User student = User.empty();
 
+  /// The [fetchUserDetails] method is used to fetch the user details from the database.
+  /// It returns a [Future] that resolves to a [User] object. The method uses the
+  /// 'currentUserRef' reference to retrieve the user data from the database and
+  /// converts it to a [User] object using the provided converters. Once the user data
+  /// is retrieved and assigned to the 'student' object, the [notifyListeners] method
+  /// is called to notify any listeners that the user data has been updated.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// UserProvider userProvider = UserProvider();
+  /// User user = await userProvider.fetchUserDetails();
+  /// print(user.name);
+  /// ```
   Future<User> fetchUserDetails() {
     return currentUserRef
         .withConverter<User>(
@@ -13,6 +35,7 @@ class UserProvider extends ChangeNotifier {
         .get()
         .then((value) {
       student = value.data()!;
+
       notifyListeners();
       return student;
     });

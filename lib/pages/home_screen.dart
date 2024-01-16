@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student/gobal/constants.dart';
 
-import 'package:student/model/batch.dart';
 import 'package:student/pages/batch_join_page.dart';
+import 'package:student/provider/batch_provider.dart';
 import 'package:student/provider/user_provider.dart';
 import 'package:student/widgets/exam/exam_item.dart';
 import 'package:student/widgets/hero_section.dart';
@@ -20,20 +20,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // Declare Variables
-  late Batch batch = Batch.empty();
-
   @override
   void initState() {
     super.initState();
 
     // Fetch the user details form the firestore
-    Provider.of<UserProvider>(context, listen: false).fetchUserDetails();
+    Provider.of<UserProvider>(context, listen: false)
+        .fetchUserDetails()
+        .then((user) {
+      if (user.batches.isNotEmpty) {
+        Provider.of<BatchProvider>(context, listen: false)
+            .setBatch(user.batches.first.path);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    var batchProvider = Provider.of<BatchProvider>(context);
+
     var userDetails = Provider.of<UserProvider>(context).student;
+    var batch = batchProvider.currentBatch;
 
     // Show loading screen until the data is fetched
     if (userDetails.isEmpty) {
@@ -45,34 +52,10 @@ class _MyHomePageState extends State<MyHomePage> {
       return const BatchJoinPage();
     }
 
-    // Fetch the batch details from the firestore is not fetched yet
-    if (batch.isEmpty) {
-      // Fetch the batch details from the firestore
-      userDetails.batches.first
-          .withConverter(
-            fromFirestore: (snapshot, _) => Batch.fromFirestore(snapshot),
-            toFirestore: (b, _) => b.toFirestore(),
-          )
-          .get()
-          .then((batchSnap) {
-        setState(() {
-          batch = batchSnap.data()!;
-        });
-      });
-    }
-
-    // Group the exams to recent, upcomming and ongoing based on the start time and end time
-    final List<BatchExam> expiredExams =
-        batch.exams.where((exam) => exam.isExpired).toList();
-    final List<BatchExam> upcommingExams =
-        batch.exams.where((exam) => exam.isUpcoming).toList();
-    final BatchExam ongoingExam = batch.exams
-        .firstWhere((exam) => exam.isOngoing, orElse: () => BatchExam.empty());
-
     // Check if the user can access the exam
     // TODO: Add the logic to check if the user can access the exam
     // TODO: Check if the user can bypass this when the network is slower, or if the user is offline
-    final bool _canAccessExam =
+    final bool canAccessExam =
         !batch.restrictedStudentsFromExam.contains(currentUserRef);
 
     // Home Screen of the studnet app that shows the exam list of the batch
@@ -130,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // Notifications
             const SizedBox(height: 20.0),
             Text(
-              !_canAccessExam
+              !canAccessExam
                   ? "Oh No! Bad News! \n You can't access the exams please ask your to teacher"
                   : "No Notifications for you",
             ),
@@ -140,36 +123,65 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: 20.0),
             Text("Ongoing Exams",
                 style: Theme.of(context).textTheme.titleMedium),
-
-            AspectRatio(
-                aspectRatio: 16 / 9,
-                child: ongoingExam.isEmpty
+            StreamBuilder(
+                stream: batchProvider.ongoingExamsStream,
+                builder: (context, snt) => snt.data == null || snt.data!.isEmpty
                     ? const Center(child: Text("No Exams Running Now"))
-                    : ExamItem(ongoingExam, disabled: !_canAccessExam)),
+                    : Column(
+                        children: [
+                          ...snt.data!.map((e) => AspectRatio(
+                                aspectRatio: 16 / 9,
+                                child: ExamItem(
+                                  e,
+                                  disabled: !canAccessExam,
+                                ),
+                              ))
+                        ],
+                      )),
 
             // Upcomming Exams
-            // Vertical Scroll Section
+            // Horizontal Scroll Section
             const SizedBox(height: 20.0),
             Text("Upcomming Exams",
                 style: Theme.of(context).textTheme.titleMedium),
-            ...upcommingExams.map((exam) => ExamItem(exam, disabled: true)),
+            StreamBuilder(
+              stream: batchProvider.upcomingExamsStream,
+              builder: (ctx, snt) => snt.data == null || snt.data!.isEmpty
+                  ? const Center(child: Text("No Upcomming Exams"))
+                  : SizedBox(
+                      height: MediaQuery.of(context).size.width / 2.8 * 1.6,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: snt.data?.length,
+                          itemBuilder: (context, index) => SizedBox(
+                              width: MediaQuery.of(context).size.width / 2.8,
+                              child: ExamCard(
+                                snt.data![index],
+                                disabled: true,
+                              ))),
+                    ),
+            ),
 
             // Expired Exams
-            // Horizontal Scroll Section
+            // Vertical Scroll Section
             const SizedBox(height: 20.0),
             Text("Expired Exams",
                 style: Theme.of(context).textTheme.titleMedium),
-            SizedBox(
-                height: MediaQuery.of(context).size.width / 2.8 * 1.6,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: expiredExams.length,
-                    itemBuilder: (context, index) => SizedBox(
-                        width: MediaQuery.of(context).size.width / 2.8,
-                        child: ExamCard(
-                          expiredExams[index],
-                          disabled: true,
-                        )))),
+            StreamBuilder(
+                stream: batchProvider.expiredExamsStream,
+                builder: (ctx, snt) => snt.data == null || snt.data!.isEmpty
+                    ? const Center(child: Text("No Expired Exams"))
+                    : Column(
+                        children: [
+                          ...snt.data!.map((e) => SizedBox(
+                                width: double.infinity,
+                                child: ExamItem(
+                                  e,
+                                  disabled: true,
+                                ),
+                              )),
+                        ],
+                      )),
           ],
         ),
       ),

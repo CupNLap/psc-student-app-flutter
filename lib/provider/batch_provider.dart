@@ -7,6 +7,20 @@ class BatchProvider extends ChangeNotifier {
   final Map<String, Batch> _batches = {};
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Batch currentBatch = Batch.empty();
+
+  Stream<List<BatchExam>> get expiredExamsStream =>
+      _examsStream(ExamStatus.expired);
+  Stream<List<BatchExam>> get ongoingExamsStream =>
+      _examsStream(ExamStatus.ongoing);
+  Stream<List<BatchExam>> get upcomingExamsStream =>
+      _examsStream(ExamStatus.upcoming);
+
+  Stream<List<BatchExam>> _examsStream(ExamStatus status) {
+    return Stream.periodic(const Duration(seconds: 1)).map((_) =>
+        currentBatch.exams.where((exam) => exam.status == status).toList());
+  }
+
   /// Fetches batch data from Firestore using the provided [batchPath].
   ///
   /// It converts the Firestore document snapshot into a [Batch] object
@@ -67,5 +81,10 @@ class BatchProvider extends ChangeNotifier {
         rethrow; // Rethrow the error to handle it in the UI
       }
     }
+  }
+
+  void setBatch(String batchPath) async {
+    currentBatch = await getBatch(batchPath);
+    notifyListeners();
   }
 }
