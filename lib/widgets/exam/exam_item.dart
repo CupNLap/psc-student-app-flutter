@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student/model/batch.dart';
 import 'package:student/pages/exam_screen.dart';
 
@@ -74,35 +75,50 @@ class ExamItem extends StatelessWidget {
       child: InkWell(
           onTap: disabled
               ? null
-              : () => {
-                    showDialog(
-                      context: context,
-                      builder: (_) => AlertDialog(
-                        content: Text(
-                            'Are you ready to attempt the exam - "${exam.name}"?'),
-                        actions: [
-                          TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text("Cancel")),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ExamScreen(
-                                    examRef: exam.ref,
-                                    time: exam.time,
+              : () {
+                  SharedPreferences.getInstance().then((pref) {
+                    bool isFirstAttempt =
+                        pref.getBool('${exam.ref?.path}') ?? true;
+
+                    if (isFirstAttempt) {
+                      pref.setBool('${exam.ref?.path}', false);
+
+                      showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          content: Text(
+                              'Are you ready to attempt the exam - "${exam.name}"?'),
+                          actions: [
+                            TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text("Cancel")),
+                            TextButton(
+                              onPressed: () {
+                                // Close the AlertDialog
+                                Navigator.pop(context);
+                                // Navigate to the exam
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ExamScreen(
+                                      examRef: exam.ref,
+                                      time: exam.time,
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                            child: const Text("OK"),
-                          ),
-                        ],
-                      ),
-                    ),
-                  },
+                                );
+                              },
+                              child: const Text("OK"),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content:
+                              Text('You have already Attempted this exam')));
+                    }
+                  });
+                },
           child: _buildContents()),
     );
   }

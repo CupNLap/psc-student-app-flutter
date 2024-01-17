@@ -59,7 +59,7 @@ class ExamProvider extends ChangeNotifier {
   /// If an error occurs during the fetching process, it returns an error state
   /// [Exam] object.
   Future<Exam?> getExam(String examPath) async {
-    if (_exams.containsKey('examPath')) {
+    if (_exams.containsKey(examPath)) {
       currentExam = _exams[examPath]!;
       currentExamPath = examPath;
       return currentExam;
