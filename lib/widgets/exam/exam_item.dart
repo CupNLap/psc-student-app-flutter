@@ -81,8 +81,6 @@ class ExamItem extends StatelessWidget {
                         pref.getBool('${exam.ref?.path}') ?? true;
 
                     if (isFirstAttempt) {
-                      pref.setBool('${exam.ref?.path}', false);
-
                       showDialog(
                         context: context,
                         builder: (_) => AlertDialog(
@@ -106,6 +104,7 @@ class ExamItem extends StatelessWidget {
                                     ),
                                   ),
                                 );
+                                pref.setBool('${exam.ref?.path}', false);
                               },
                               child: const Text("OK"),
                             ),
