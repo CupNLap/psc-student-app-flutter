@@ -17,6 +17,7 @@ class AuthGate extends StatelessWidget {
           // return const SignUpPage();
           return SignInScreen(providers: [
             PhoneAuthProvider(),
+            // GoogleProvider(clientId: "AIzaSyB7LvpHUOr8utXvKeF0fYZqCmGTl37tqag")
             GoogleProvider(clientId: "AIzaSyB7LvpHUOr8utXvKeF0fYZqCmGTl37tqag")
           ]);
         }
