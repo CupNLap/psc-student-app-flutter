@@ -41,15 +41,21 @@ dependencies:
 
   # firebase
   firebase_core: ^2.24.0
+  firebase_auth: ^4.15.3
+  firebase_ui_auth: ^1.12.1
   cloud_firestore: ^4.13.3
+  
   flutter_animate: ^4.3.0
   provider: ^6.1.1
-  firebase_auth: ^4.15.3
+  
+
   flutter_barcode_scanner: ^2.0.0
 
   version_gate:
     path: ../../../Works/Flutter Project/packages/version_gate
   google_mobile_ads: ^4.0.0
+  firebase_ui_oauth_google: ^1.2.17
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:

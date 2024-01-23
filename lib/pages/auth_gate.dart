@@ -1,7 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide PhoneAuthProvider;
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:student/pages/home_screen.dart';
-import 'package:student/pages/sign_up.dart';
 import 'package:version_gate/version_gate.dart';
 
 class AuthGate extends StatelessWidget {
@@ -13,12 +14,12 @@ class AuthGate extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const SignUpPage();
+          // return const SignUpPage();
+          return SignInScreen(providers: [
+            PhoneAuthProvider(),
+            GoogleProvider(clientId: "AIzaSyB7LvpHUOr8utXvKeF0fYZqCmGTl37tqag")
+          ]);
         }
-        // TODO - gather email details as well
-        // else if(snapshot.data?.emailVerified == false) {
-        //   return const GoogleSignIn();
-        // }
 
         return FireStoreVersionGate(
           docPath: 'AppDetails/version',
