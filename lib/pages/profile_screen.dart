@@ -1,9 +1,11 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 import 'package:student/gobal/constants.dart';
+import 'package:student/provider/user_provider.dart';
 import 'package:student/theme/app_theme.dart';
 import 'package:student/widgets/utils/gap.dart';
 
@@ -36,65 +38,49 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     Gap(AppTheme.largeGutter),
                     RoundedImageWithBorder(
-                      image: AssetImage(
-                          "assets/images/avatar/avatar${new Random().nextInt(4) + 1}.png"),
+                      image: currentUser.photoURL != null
+                          ? CachedNetworkImageProvider(currentUser.photoURL!)
+                              as ImageProvider
+                          : AssetImage(
+                              "assets/images/avatar/avatar${new Random().nextInt(4) + 1}.png"),
                       borderRadius: AppTheme.largeRadius,
                     ),
-
                     Text(currentUser.uid,
                         style: Theme.of(context).textTheme.bodySmall),
-
                     Gap(AppTheme.largeGutter),
                     ProfileItem(
                       title: "Name",
                       content: currentUser.displayName,
                     ),
-                    // Link with the email, if not connected yet
-
-                    ProfileItem(
-                      title: "Email ${currentUser.emailVerified}",
-                      content: currentUser.email,
-                      onPressed: () {
-                        if (!currentUser.emailVerified) {
-                          Future<UserCredential?> signInWithGoogle() async {
-                            // Trigger the authentication flow
-                            final GoogleSignInAccount? googleUser =
-                                await GoogleSignIn().signIn();
-
-                            // Obtain the auth details from the request
-                            final GoogleSignInAuthentication? googleAuth =
-                                await googleUser?.authentication;
-
-                            // Create a new credential
-                            final credential = GoogleAuthProvider.credential(
-                              accessToken: googleAuth?.accessToken,
-                              idToken: googleAuth?.idToken,
-                            );
-
-                            print(credential);
-                            var d = await FirebaseAuth.instance.currentUser
-                                ?.linkWithCredential(credential);
-
-                            print(d);
-                            return d;
-                            // // Once signed in, return the UserCredential
-                            // return await FirebaseAuth.instance
-                            //     .signInWithCredential(credential);
-                          }
-
-                          signInWithGoogle();
-                        }
-                      },
-                    ),
                     ProfileItem(
                       title: "Phone",
                       content: currentUser.phoneNumber,
                     ),
-                    CustomButton(
-                      icon: Icons.upload_rounded,
-                      text: "Update Profile",
-                      onPressed: () {},
+                    // Link with the email, if not connected yet
+                    ProfileItem(
+                      title: "Email",
+                      content: currentUser.email,
+                      onPressed: currentUser.email != null &&
+                              currentUser.email!.isNotEmpty
+                          ? null
+                          : () async {
+                              if (!currentUser.emailVerified) {
+                                await Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .signInWithGoogle();
+                                Navigator.pop(context);
+                              }
+                            },
                     ),
+                    // Gap(AppTheme.smallGutter),
+                    // CustomButton(
+                    //   buttonColor: Colors.white,
+                    //   color: Colors.red,
+                    //   icon: Icons.upload_rounded,
+                    //   text: "Update Profile",
+                    //   onPressed: () {},
+                    // ),
+                    // Gap(AppTheme.largeGutter),
                     CustomButton(
                         icon: Icons.logout,
                         text: "Logout",
@@ -123,33 +109,51 @@ class ProfileItem extends StatelessWidget {
 
   final String title;
   final String? content;
-  final Function? onPressed;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => onPressed?.call(),
-      child: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Gap(AppTheme.smallGutter),
-            Text(
-              title,
-              style:
-                  TextStyle(color: AppTheme.textTitle, fontFamily: 'Poppins'),
-            ),
-            Text(
-              content ?? "---",
-              style: TextStyle(color: AppTheme.textBody),
-            ),
-            Divider(
-              color: AppTheme.divider,
-            ),
-          ],
-        ),
+    return onPressed == null
+        ? buildContentView()
+        : Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              buildContentView(),
+              // CustomButton(
+              //     icon: Icons.arrow_right_alt_rounded,
+              //     text: "Link Email",
+              //     onPressed: () => onPressed),
+              IconButton(
+                  onPressed: onPressed,
+                  icon: Icon(Icons.arrow_right_alt_rounded,
+                      color: AppTheme.textBody)),
+            ],
+          );
+  }
+
+  Container buildContentView() {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Gap(AppTheme.smallGutter),
+          Text(
+            title,
+            style: TextStyle(color: AppTheme.textTitle),
+          ),
+          Text(
+            content ?? "---",
+            style: TextStyle(color: AppTheme.textBody, fontFamily: 'Poppins'),
+          ),
+          Divider(
+            color: AppTheme.divider,
+          ),
+          Gap(AppTheme.smallGutter),
+        ],
       ),
     );
   }
@@ -187,30 +191,33 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final Color buttonColor;
+  final Color color;
 
-  const CustomButton(
-      {required this.icon,
-      required this.text,
-      required this.onPressed,
-      this.buttonColor = Colors.green});
+  const CustomButton({
+    required this.icon,
+    required this.text,
+    required this.onPressed,
+    this.buttonColor = Colors.green,
+    this.color = Colors.white,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity, // Utilize full width
+      width: double.maxFinite, // Utilize full width
       child: Container(
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.5),
-            offset: Offset(4.0, 4.0),
-            blurRadius: 4.0,
+            offset: Offset(2.0, 4.0),
+            blurRadius: 8.0,
           ),
         ]),
         child: TextButton(
           onPressed: onPressed,
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(buttonColor),
-            foregroundColor: MaterialStateProperty.all(Colors.white),
+            foregroundColor: MaterialStateProperty.all(color),
             padding: MaterialStateProperty.all(
                 EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
             shape: MaterialStateProperty.all(
@@ -219,9 +226,10 @@ class CustomButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, color: Colors.white),
+              Text(text,
+                  style: TextStyle(fontWeight: FontWeight.bold, color: color)),
               SizedBox(width: 8),
-              Text(text, style: TextStyle(color: Colors.white)),
+              Icon(icon, color: color),
             ],
           ),
         ),

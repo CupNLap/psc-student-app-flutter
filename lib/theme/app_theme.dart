@@ -7,8 +7,8 @@ class AppTheme {
   
   static const Color accentColor = Color(0xFF4C0201);
   
-  static const Color textTitle = Color.fromARGB(255, 255, 255, 255);
-  static const Color textBody = Color.fromARGB(255, 222, 222, 222);
+  static const Color textTitle = Color.fromARGB(255, 222, 222, 222);
+  static const Color textBody = Color.fromARGB(255, 255, 255, 255);
   
   static const Color shadow = Color.fromARGB(149, 0, 0, 0);
   static const Color divider = Color(0xFFCACACA);

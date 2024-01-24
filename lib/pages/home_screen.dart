@@ -33,6 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (user.batches.isNotEmpty) {
         Provider.of<BatchProvider>(context, listen: false)
             .setBatch(user.batches.first.path);
+        setState(() {});
       }
     });
   }
