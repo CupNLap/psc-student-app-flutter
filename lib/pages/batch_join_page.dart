@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student/model/batch.dart';
@@ -86,18 +85,22 @@ class _BatchJoinPageState extends State<BatchJoinPage> {
     return Scaffold(
       body: Center(
         child: _scanBarcode.isNotEmpty
-            ? const Column(
+            ?  Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                       "Request to Join the batch has been sent to respective admins"),
-                  SizedBox(height: 20),
-                  Text("Please ask your admin to accept the request"),
+                  const SizedBox(height: 20),
+                  const Text("Please ask your admin to accept the request"),
+                  ElevatedButton(
+                    onPressed: () => scanQR(),
+                    child: const Text('Request to join new batch'),
+                  )
                 ],
               )
             : ElevatedButton(
                 onPressed: () => scanQR(),
-                child: const Text('Start QR scan'),
+                child: const Text('Scan QR and Request to Join'),
               ),
       ),
     );
