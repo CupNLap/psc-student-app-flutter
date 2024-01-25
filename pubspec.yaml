@@ -50,6 +50,7 @@ dependencies:
   version_gate:
     path: ../../../Works/Flutter Project/packages/version_gate
   google_mobile_ads: ^4.0.0
+  firebase_crashlytics: ^3.4.9
 
 dev_dependencies:
   flutter_test:
