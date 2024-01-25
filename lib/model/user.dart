@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 
 class User {
   String uid;
@@ -25,9 +27,17 @@ class User {
     if (snap.data() == null) {
       return User.empty();
     }
-
-    List<DocumentReference> batches =
-        List<DocumentReference>.from([...snap.get('batches')]);
+    List<DocumentReference> batches = [];
+    try {
+      batches = List<DocumentReference>.from([...snap.get('batches')]);
+    } on StateError catch (e) {
+      print('afeef');
+      FirebaseCrashlytics.instance.recordFlutterFatalError(FlutterErrorDetails(
+        exception: e,
+        library: 'CupNLap User Model',
+        context: ErrorSummary('while fetching batches from user object'),
+      ));
+    }
 
     return User(
       uid: snap.id,
@@ -35,8 +45,6 @@ class User {
       name: snap.get('name'),
       phone: snap.get('phone'),
     );
-
-    
   }
 
   bool get isEmpty => uid.isEmpty;
