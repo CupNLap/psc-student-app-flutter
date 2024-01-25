@@ -31,7 +31,6 @@ class User {
     try {
       batches = List<DocumentReference>.from([...snap.get('batches')]);
     } on StateError catch (e) {
-      print('afeef');
       FirebaseCrashlytics.instance.recordFlutterFatalError(FlutterErrorDetails(
         exception: e,
         library: 'CupNLap User Model',
