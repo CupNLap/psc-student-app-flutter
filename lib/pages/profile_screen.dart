@@ -56,7 +56,7 @@ class ProfileScreen extends StatelessWidget {
                       title: "Phone",
                       content: currentUser.phoneNumber,
                     ),
-                    // Link with the email, if not connected yet
+                    
                     ProfileItem(
                       title: "Email",
                       content: currentUser.email,
@@ -72,22 +72,21 @@ class ProfileScreen extends StatelessWidget {
                               }
                             },
                     ),
-                    // Gap(AppTheme.smallGutter),
-                    // CustomButton(
-                    //   buttonColor: Colors.white,
-                    //   color: Colors.red,
-                    //   icon: Icons.upload_rounded,
-                    //   text: "Update Profile",
-                    //   onPressed: () {},
-                    // ),
-                    // Gap(AppTheme.largeGutter),
-                    CustomButton(
-                        icon: Icons.logout,
-                        text: "Logout",
-                        buttonColor: Colors.red,
+                    // Link with the email, if not connected yet
+                    if (!currentUser.emailVerified) ...[
+                      Gap(AppTheme.smallGutter),
+                      CustomButton(
+                        buttonColor: Colors.white,
+                        color: Colors.red,
+                        icon: Icons.insert_link_outlined,
+                        text: "Link Google Account",
                         onPressed: () {
-                          FirebaseAuth.instance.signOut();
-                        }),
+                          Provider.of<UserProvider>(context, listen: false)
+                              .signInWithGoogle();
+                        },
+                      ),
+                      Gap(AppTheme.largeGutter),
+                    ],
                   ],
                 ),
               ),
