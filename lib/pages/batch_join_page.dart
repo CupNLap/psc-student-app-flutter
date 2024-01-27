@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student/model/batch.dart';
 
 bool isValidJoiningQRCode(s) {
@@ -22,6 +22,13 @@ class _BatchJoinPageState extends State<BatchJoinPage> {
 
   @override
   Widget build(BuildContext context) {
+    SharedPreferences.getInstance().then((pref) {
+      String scanBarcode = pref.getString('scanBarcode') ?? '';
+      setState(() {
+        _scanBarcode = scanBarcode;
+      });
+    });
+
     void requestToJoinBatch(String instituteId, String batchId) {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
       final user = FirebaseAuth.instance.currentUser!;
@@ -34,7 +41,8 @@ class _BatchJoinPageState extends State<BatchJoinPage> {
       final CollectionReference requestRef = firestore.collection(requestPath);
 
       BatchJoinRequest request = BatchJoinRequest(
-          userName: user.displayName!,
+          userName:
+              user.displayName ?? user.email ?? user.phoneNumber ?? user.uid,
           batch: batchRef,
           user: userRef,
           created: Timestamp.now(),
@@ -55,6 +63,11 @@ class _BatchJoinPageState extends State<BatchJoinPage> {
             var ids = barcodeScanRes.split('/');
 
             requestToJoinBatch(ids[0], ids[1]);
+
+            // Save the batch id in shared preferences
+            SharedPreferences.getInstance().then((pref) {
+              pref.setString('scanBarcode', barcodeScanRes);
+            });
 
             // If the widget was removed from the tree while the asynchronous platform
             // message was in flight, we want to discard the reply rather than calling
@@ -78,13 +91,17 @@ class _BatchJoinPageState extends State<BatchJoinPage> {
                 children: [
                   const Text(
                       "Request to Join the batch has been sent to respective admins"),
+                  const SizedBox(height: 20),
                   const Text("Please ask your admin to accept the request"),
-                  Text(_scanBarcode),
+                  ElevatedButton(
+                    onPressed: () => scanQR(),
+                    child: const Text('Request to join new batch'),
+                  )
                 ],
               )
             : ElevatedButton(
                 onPressed: () => scanQR(),
-                child: const Text('Start QR scan'),
+                child: const Text('Scan QR and Request to Join'),
               ),
       ),
     );
