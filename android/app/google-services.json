@@ -45,13 +45,6 @@
             {
               "client_id": "84656227361-ra1ec5jamig3a25j19g4j167fklqkg8t.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "84656227361-fs5untf7shtrt7okuuauked8vahsh6k3.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.institute"
-              }
             }
           ]
         }
@@ -71,6 +64,14 @@
           "android_info": {
             "package_name": "com.alchemist.student",
             "certificate_hash": "8218255a1037687210ad93968006de7e6e7a305e"
+          }
+        },
+        {
+          "client_id": "84656227361-m8iu9t2gg20hd0hb4eh4120i1tnemclv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alchemist.student",
+            "certificate_hash": "da3f165d15b16f275b7cb5a3ab651f6e3c656d37"
           }
         },
         {
@@ -97,13 +98,6 @@
             {
               "client_id": "84656227361-ra1ec5jamig3a25j19g4j167fklqkg8t.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "84656227361-fs5untf7shtrt7okuuauked8vahsh6k3.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.institute"
-              }
             }
           ]
         }
@@ -117,14 +111,6 @@
         }
       },
       "oauth_client": [
-        {
-          "client_id": "60907112844-q6nv1p0bnhqn7rpumkq6aji8olcbocrf.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.student",
-            "certificate_hash": "2b05e6eb5493e4fe64d9b3baa66a03c5bb5985f3"
-          }
-        },
         {
           "client_id": "84656227361-ra1ec5jamig3a25j19g4j167fklqkg8t.apps.googleusercontent.com",
           "client_type": 3
@@ -141,13 +127,6 @@
             {
               "client_id": "84656227361-ra1ec5jamig3a25j19g4j167fklqkg8t.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "84656227361-fs5untf7shtrt7okuuauked8vahsh6k3.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.institute"
-              }
             }
           ]
         }
