@@ -41,7 +41,8 @@ class _BatchJoinPageState extends State<BatchJoinPage> {
       final CollectionReference requestRef = firestore.collection(requestPath);
 
       BatchJoinRequest request = BatchJoinRequest(
-          userName: user.displayName!,
+          userName:
+              user.displayName ?? user.email ?? user.phoneNumber ?? user.uid,
           batch: batchRef,
           user: userRef,
           created: Timestamp.now(),
@@ -85,7 +86,7 @@ class _BatchJoinPageState extends State<BatchJoinPage> {
     return Scaffold(
       body: Center(
         child: _scanBarcode.isNotEmpty
-            ?  Column(
+            ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
