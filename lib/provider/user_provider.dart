@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/foundation.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:student/gobal/constants.dart';
 import 'package:student/model/user.dart';
 
@@ -39,5 +41,29 @@ class UserProvider extends ChangeNotifier {
       notifyListeners();
       return student;
     });
+  }
+
+  Future<UserCredential?> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser =
+        await GoogleSignIn(forceCodeForRefreshToken: true).signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Link the google account with the current user
+    await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
+
+    // Once the user successfull linked, sign in the user with the google credential
+    await FirebaseAuth.instance.signOut();
+
+    return FirebaseAuth.instance.signInWithCredential(credential);
   }
 }

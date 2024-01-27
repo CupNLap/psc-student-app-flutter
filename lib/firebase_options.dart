@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyB7LvpHUOr8utXvKeF0fYZqCmGTl37tqag',
-    appId: '1:60907112844:android:09427895ca9da829caeea9',
+    appId: '1:60907112844:android:30f542371d9f8193caeea9',
     messagingSenderId: '60907112844',
     projectId: 'psc-app-develop',
     storageBucket: 'psc-app-develop.appspot.com',

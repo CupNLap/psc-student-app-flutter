@@ -2,13 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student/gobal/constants.dart';
-
 import 'package:student/pages/batch_join_page.dart';
 import 'package:student/provider/batch_provider.dart';
 import 'package:student/provider/user_provider.dart';
+import 'package:student/widgets/exam/exam_card.dart';
 import 'package:student/widgets/exam/exam_item.dart';
 import 'package:student/widgets/hero_section.dart';
-import 'package:student/widgets/exam/exam_card.dart';
+
+// Import widgets
+import '../widgets/utils/navigation/custom_bottom_navigator.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -31,6 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (user.batches.isNotEmpty) {
         Provider.of<BatchProvider>(context, listen: false)
             .setBatch(user.batches.first.path);
+        setState(() {});
       }
     });
   }
@@ -102,6 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
+      bottomNavigationBar: CustomBottomNavigationBar(),
       // Home Screen Body contains the list of ongoing, upcomming and expired exams
       body: Padding(
         padding: const EdgeInsets.all(8.0),

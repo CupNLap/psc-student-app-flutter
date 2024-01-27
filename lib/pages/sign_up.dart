@@ -170,7 +170,7 @@ class SignUpPageState extends State<SignUpPage> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  child: const Text('Verify'),
+                  child: const Text('Verify OTP'),
                 )
               ],
             ),

@@ -1,11 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide PhoneAuthProvider;
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
-import 'package:student/pages/home_screen.dart';
-import 'package:student/pages/sign_up.dart';
-import 'package:version_gate/version_gate.dart';
 
 class AuthGate extends StatelessWidget {
-  const AuthGate({super.key});
+  const AuthGate({
+    super.key,
+    required this.child,
+  });
+
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -13,22 +17,23 @@ class AuthGate extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const SignUpPage();
+          return MaterialApp(
+            theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.red)),
+            home: SignInScreen(
+              providers: [
+                PhoneAuthProvider(),
+                GoogleProvider(
+                    clientId: "AIzaSyB7LvpHUOr8utXvKeF0fYZqCmGTl37tqag"),
+              ],
+            ),
+          );
         }
-        // TODO - gather email details as well
-        // else if(snapshot.data?.emailVerified == false) {
-        //   return const GoogleSignIn();
-        // }
 
-        return FireStoreVersionGate(
-          docPath: 'AppDetails/version',
-          expiredField: "studentExpired",
-          latestField: "studentLatest",
-          version: 0.0,
-          updateUrl: Uri.parse(
-              "https://play.google.com/store/apps/details?id=com.alchemistbathery.student"),
-          child: const MyHomePage(title: 'Alchemist Bathery'),
-        );
+        // TODO - BUG - When the user logs out and then logs back in, it shows the
+        //  details of the previous user.
+        //  Rootcause - the state is not updated
+        return child;
       },
     );
   }
