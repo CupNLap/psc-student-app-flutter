@@ -22,10 +22,10 @@ class AppRoutes {
             docPath: 'AppDetails/version',
             expiredField: "studentExpired",
             latestField: "studentLatest",
-            version: -2,
+            version: 3,
             updateUrl: Uri.parse(
-                "https://play.google.com/store/apps/details?id=com.alchemistbathery.student"),
-            child: const MyHomePage(title: "Kerala PSC Insitute")),
+                "https://play.google.com/store/apps/details?id=com.alchemist.student"),
+            child: const MyHomePage(title: "Alchemist Bathery")),
       ),
       // GoRoute(
       //   path: loginRoute,
