@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student/gobal/constants.dart';
+import 'package:student/model/batch.dart';
 import 'package:student/pages/batch_join_page.dart';
 import 'package:student/provider/batch_provider.dart';
 import 'package:student/provider/user_provider.dart';
@@ -9,7 +10,6 @@ import 'package:student/widgets/exam/exam_card.dart';
 import 'package:student/widgets/exam/exam_item.dart';
 import 'package:student/widgets/hero_section.dart';
 
-// Import widgets
 import '../widgets/utils/navigation/custom_bottom_navigator.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -25,18 +25,22 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-
     // Fetch the user details form the firestore
-    Provider.of<UserProvider>(context, listen: false)
-        .fetchUserDetails()
-        .then((user) {
-      if (user.batches.isNotEmpty) {
-        Provider.of<BatchProvider>(context, listen: false)
-            .setBatch(user.batches.first.path);
-        setState(() {});
-      }
-    });
+    Provider.of<UserProvider>(context, listen: false).fetchUserDetails().then(
+      (user) {
+        if (user.batches.isNotEmpty) {
+          Provider.of<BatchProvider>(context, listen: false)
+              .setBatch(user.batches.first.path);
+        }
+      },
+    );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -122,73 +126,88 @@ class _MyHomePageState extends State<MyHomePage> {
                   : "No Notifications for you",
             ),
 
-            // Ongoing Exams
-            // Single Exam Item
-            const SizedBox(height: 20.0),
-            Text("Ongoing Exams",
-                style: Theme.of(context).textTheme.titleMedium),
-            StreamBuilder(
-                stream: batchProvider.ongoingExamsStream,
-                builder: (context, snt) => snt.data == null || snt.data!.isEmpty
-                    ? const Center(child: Text("No Exams Running Now"))
-                    : Column(
-                        children: [
-                          ...snt.data!.map((e) => AspectRatio(
-                                aspectRatio: 16 / 9,
-                                child: ExamItem(
-                                  e,
-                                  disabled: !canAccessExam,
-                                ),
-                              ))
-                        ],
-                      )),
+            StreamBuilder<List<BatchExam>>(
+              stream: Provider.of<BatchProvider>(context, listen: false)
+                  .examsStream,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final exams = snapshot.data!;
 
-            // Upcomming Exams
-            // Horizontal Scroll Section
-            const SizedBox(height: 20.0),
-            Text("Upcomming Exams",
-                style: Theme.of(context).textTheme.titleMedium),
-            StreamBuilder(
-              stream: batchProvider.upcomingExamsStream,
-              builder: (ctx, snt) => snt.data == null || snt.data!.isEmpty
-                  ? const Center(child: Text("No Upcomming Exams"))
-                  : SizedBox(
-                      height: MediaQuery.of(context).size.width / 2.8 * 1.6,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: snt.data?.length,
-                          itemBuilder: (context, index) => SizedBox(
+                  final List<BatchExam> ongoingExams = exams
+                      .where((exam) => exam.status == ExamStatus.ongoing)
+                      .toList()
+                    ..sort((a, b) => a.startAt.compareTo(b.startAt));
+                  final List<BatchExam> upcomingExams = exams
+                      .where((exam) => exam.status == ExamStatus.upcoming)
+                      .toList()
+                    ..sort((a, b) => a.startAt.compareTo(b.startAt));
+                  final List<BatchExam> expiredExams = exams
+                      .where((exam) => exam.status == ExamStatus.expired)
+                      .toList()
+                    ..sort((a, b) => b.startAt.compareTo(a.startAt));
+
+                  return ListView(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      ..._buildExamSection(
+                          "Ongoing Exam",
+                          ongoingExams,
+                          (e) => AspectRatio(
+                              aspectRatio: 16 / 9, child: ExamItem(e))),
+
+                      // ..._buildExamSection("Upcoming Exam", upcomingExams,
+                      //     (e) => ExamItem(e, disabled: true)),
+
+                      if (upcomingExams.isNotEmpty) ...[
+                        const SizedBox(height: 20.0),
+                        Text("Upcomming Exams",
+                            style: Theme.of(context).textTheme.headlineMedium),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.width / 2.8 * 1.6,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: upcomingExams.length,
+                            itemBuilder: (context, index) => SizedBox(
                               width: MediaQuery.of(context).size.width / 2.8,
                               child: ExamCard(
-                                snt.data![index],
+                                upcomingExams[index],
                                 disabled: true,
-                              ))),
-                    ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                      ..._buildExamSection("Expired Exam", expiredExams,
+                          (e) => ExamItem(e, disabled: true)),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return Text(snapshot.error.toString());
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
             ),
-
-            // Expired Exams
-            // Vertical Scroll Section
-            const SizedBox(height: 20.0),
-            Text("Expired Exams",
-                style: Theme.of(context).textTheme.titleMedium),
-            StreamBuilder(
-                stream: batchProvider.expiredExamsStream,
-                builder: (ctx, snt) => snt.data == null || snt.data!.isEmpty
-                    ? const Center(child: Text("No Expired Exams"))
-                    : Column(
-                        children: [
-                          ...snt.data!.map((e) => SizedBox(
-                                width: double.infinity,
-                                child: ExamItem(
-                                  e,
-                                  disabled: true,
-                                ),
-                              )),
-                        ],
-                      )),
           ],
         ),
       ),
     );
+  }
+
+  List<Widget> _buildExamSection(
+      String name, List<BatchExam> exams, Widget Function(BatchExam) builder) {
+    if (exams.isEmpty) {
+      return <Widget>[
+        const SizedBox(height: 20.0),
+        Text(name, style: Theme.of(context).textTheme.headlineMedium),
+        Center(child: Text("No ${name}"))
+      ];
+    }
+    return <Widget>[
+      const SizedBox(height: 20.0),
+      Text(name, style: Theme.of(context).textTheme.headlineMedium),
+      ...exams.map((e) => builder(e)).toList(),
+    ];
   }
 }

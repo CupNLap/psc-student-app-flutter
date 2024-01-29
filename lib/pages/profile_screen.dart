@@ -15,6 +15,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.background,
       body: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -27,9 +28,8 @@ class ProfileScreen extends StatelessWidget {
           ),
           // Content container
           Expanded(
-            child: Container(
-              padding: EdgeInsets.all(12),
-              color: AppTheme.background,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
               child: SafeArea(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,

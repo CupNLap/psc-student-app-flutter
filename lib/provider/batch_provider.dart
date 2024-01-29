@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 import '../model/batch.dart';
 
@@ -9,17 +9,9 @@ class BatchProvider extends ChangeNotifier {
 
   Batch currentBatch = Batch.empty();
 
-  Stream<List<BatchExam>> get expiredExamsStream =>
-      _examsStream(ExamStatus.expired);
-  Stream<List<BatchExam>> get ongoingExamsStream =>
-      _examsStream(ExamStatus.ongoing);
-  Stream<List<BatchExam>> get upcomingExamsStream =>
-      _examsStream(ExamStatus.upcoming);
-
-  Stream<List<BatchExam>> _examsStream(ExamStatus status) {
-    return Stream.periodic(const Duration(seconds: 1)).map((_) =>
-        currentBatch.exams.where((exam) => exam.status == status).toList());
-  }
+  Stream<List<BatchExam>> get examsStream => Stream.periodic(
+        Duration(seconds: 1),
+      ).map((_) => currentBatch.exams);
 
   /// Fetches batch data from Firestore using the provided [batchPath].
   ///
