@@ -7,12 +7,14 @@ class User {
   String uid;
   String name;
   String phone;
+  String? email;
   List<DocumentReference> batches = [];
 
   User({
     required this.uid,
     required this.name,
     required this.phone,
+    this.email,
     this.batches = const [],
   });
 
@@ -41,6 +43,8 @@ class User {
 
     String name = '';
     String phone = '';
+    String email = '';
+
     try {
       name = snap.get('name');
     } catch (_) {
@@ -53,10 +57,17 @@ class User {
       phone = currentUser.phoneNumber ?? "";
     }
 
+    try {
+      email = snap.get('email');
+    } catch (_) {
+      email = currentUser.email ?? "";
+    }
+
     return User(
       uid: snap.id,
       batches: batches,
       name: name,
+      email: email,
       phone: phone,
     );
   }
@@ -68,6 +79,7 @@ class User {
       'uid': uid,
       'name': name,
       'phone': phone,
+      'email': email,
       'batches': batches,
     };
   }

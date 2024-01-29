@@ -36,7 +36,22 @@ class UserProvider extends ChangeNotifier {
             toFirestore: (user, _) => user.toFirestore())
         .get()
         .then((value) {
-      student = value.data()!;
+      // Check if the user document is created in prior or not
+      if (value.data() != null) {
+        student = value.data()!;
+      } else {
+        student = User(
+            name: currentUser.displayName ??
+                currentUser.email ??
+                "No name or email available",
+            phone: currentUser.phoneNumber ?? "No phone number available",
+            uid: currentUser.uid);
+
+        // If the user document is not created, create it
+        currentUserRef.set(
+          student.toFirestore(),
+        );
+      }
 
       notifyListeners();
       return student;
