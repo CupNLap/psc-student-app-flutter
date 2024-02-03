@@ -1,16 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:student/monetization/google_admob/banners.dart';
-import 'package:student/pages/result_screen.dart';
-
-import 'package:student/provider/exam_provider.dart';
-import 'package:student/widgets/exam/timer.dart';
-import 'package:student/widgets/utils/restrict_pop.dart';
 
 import '../model/exam.dart';
+import '../monetization/google_admob/banners.dart';
+import '../provider/exam_provider.dart';
 import '../widgets/exam/question/question_item.dart';
+import '../widgets/exam/timer.dart';
+import '../widgets/utils/restrict_pop.dart';
+import 'result_screen.dart';
 
 class ExamScreen extends StatefulWidget {
   const ExamScreen({

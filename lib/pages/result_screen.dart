@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:student/model/exam.dart';
-import 'package:student/model/question.dart';
-import 'package:student/provider/exam_provider.dart';
+
+import '../model/exam.dart';
+import '../model/question.dart';
+import '../provider/exam_provider.dart';
 
 class ResultsScreen extends StatelessWidget {
   const ResultsScreen({super.key});

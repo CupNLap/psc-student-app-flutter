@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:student/model/batch.dart';
-import 'package:student/pages/exam_screen.dart';
+
+import '../../model/batch.dart';
+import '../../pages/exam_screen.dart';
 
 class ExamItem extends StatelessWidget {
   const ExamItem(

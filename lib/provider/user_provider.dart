@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:student/gobal/constants.dart';
-import 'package:student/model/user.dart';
+
+import '../gobal/constants.dart';
+import '../model/user.dart';
 
 /// A class that provides user data and functionality for the application.
 ///

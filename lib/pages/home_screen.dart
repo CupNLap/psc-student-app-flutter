@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:student/gobal/constants.dart';
-import 'package:student/model/batch.dart';
-import 'package:student/pages/batch_join_page.dart';
-import 'package:student/provider/batch_provider.dart';
-import 'package:student/provider/user_provider.dart';
-import 'package:student/widgets/exam/exam_card.dart';
-import 'package:student/widgets/exam/exam_item.dart';
-import 'package:student/widgets/hero_section.dart';
 
+import '../gobal/constants.dart';
+import '../model/batch.dart';
+import '../provider/batch_provider.dart';
+import '../provider/user_provider.dart';
+import '../widgets/exam/exam_card.dart';
+import '../widgets/exam/exam_item.dart';
+import '../widgets/hero_section.dart';
 import '../widgets/utils/navigation/custom_bottom_navigator.dart';
+import 'batch_join_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});

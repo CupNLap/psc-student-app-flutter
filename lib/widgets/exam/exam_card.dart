@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:student/model/batch.dart';
-import 'package:student/pages/quiz_screen.dart';
+
+import '../../model/batch.dart';
+import '../../pages/quiz_screen.dart';
 
 // Define the ExamCard widget
 class ExamCard extends StatelessWidget {

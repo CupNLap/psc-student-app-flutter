@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:student/model/question.dart';
+
+import '../../../model/question.dart';
 
 class QuestionView extends StatefulWidget {
   const QuestionView(

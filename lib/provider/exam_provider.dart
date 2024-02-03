@@ -1,10 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:student/gobal/constants.dart';
-import 'package:student/model/question.dart';
 
+import '../gobal/constants.dart';
 import '../model/exam.dart';
+import '../model/question.dart';
 
 class ExamProvider extends ChangeNotifier {
   final Map<String, Exam> _exams = {};

@@ -4,13 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
-import 'package:student/pages/auth_gate.dart';
-import 'package:student/provider/batch_provider.dart';
-import 'package:student/provider/exam_provider.dart';
-import 'package:student/provider/user_provider.dart';
-import 'package:student/routes/app_routes.dart';
 
 import 'firebase_options.dart';
+import 'pages/auth_gate.dart';
+import 'provider/batch_provider.dart';
+import 'provider/exam_provider.dart';
+import 'provider/user_provider.dart';
+import 'routes/app_routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

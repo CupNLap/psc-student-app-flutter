@@ -1,13 +1,13 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:student/gobal/constants.dart';
-import 'package:student/provider/user_provider.dart';
-import 'package:student/theme/app_theme.dart';
-import 'package:student/widgets/utils/gap.dart';
+
+import '../gobal/constants.dart';
+import '../provider/user_provider.dart';
+import '../theme/app_theme.dart';
+import '../widgets/utils/gap.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
