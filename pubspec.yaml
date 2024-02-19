@@ -54,7 +54,8 @@ dependencies:
   version_gate:
     path: ../../../Works/Flutter Project/packages/version_gate
   google_mobile_ads: ^4.0.0
-  firebase_crashlytics: ^3.4.9
+  firebase_crashlytics: ^3.4.15
+  firebase_analytics: ^10.8.6
   firebase_ui_oauth_google: ^1.2.17
   google_sign_in: ^6.2.1
   go_router: ^13.0.1

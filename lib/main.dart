@@ -25,11 +25,15 @@ void main() async {
   FlutterError.onError = (errorDetails) {
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
   };
+  // Asynchronous errors
+  // Asynchronous errors are not caught by the Flutter framework:
   // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
+  // Refer the following link for more about error recording
+  // https://firebase.google.com/docs/crashlytics/customize-crash-reports?hl=en&authuser=0&_gl=1*1ir80e7*_ga*NTY2MTI3NzcyLjE3MDE0ODczMDI.*_ga_CW55HF8NVT*MTcwODMzNTMzNi4xNzkuMS4xNzA4MzM2MTA2LjU5LjAuMA..&platform=flutter
 
   runApp(
     MultiProvider(

@@ -20,7 +20,7 @@ class ExamItem extends StatelessWidget {
     final String formattedTime =
         DateFormat('hh:mm a MMM dd ').format(exam.startAt.toDate());
 
-    Widget _buildContents() {
+    Widget buildContents() {
       return Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -75,45 +75,45 @@ class ExamItem extends StatelessWidget {
                   bool isFirstAttempt =
                       pref.getBool('${exam.ref?.path}') ?? true;
 
-                  if (isFirstAttempt) {
-                    showDialog(
-                      context: context,
-                      builder: (_) => AlertDialog(
-                        content: Text(
-                            'Are you ready to attempt the exam - "${exam.name}"?'),
-                        actions: [
-                          TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text("Cancel")),
-                          TextButton(
-                            onPressed: () {
-                              // Close the AlertDialog
-                              Navigator.pop(context);
-                              // Navigate to the exam
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ExamScreen(
-                                    examRef: exam.ref,
-                                    time: exam.time,
+                    if (isFirstAttempt) {
+                      showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          content: Text(
+                              'Are you ready to attempt the exam - "${exam.name}"?'),
+                          actions: [
+                            TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text("Cancel")),
+                            TextButton(
+                              onPressed: () {
+                                // Close the AlertDialog
+                                Navigator.pop(context);
+                                // Navigate to the exam
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ExamScreen(
+                                      examRef: exam.ref,
+                                      time: exam.time,
+                                    ),
                                   ),
-                                ),
-                              );
-                              pref.setBool('${exam.ref?.path}', false);
-                            },
-                            child: const Text("OK"),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('You have already Attempted this exam')));
-                  }
-                });
-              },
-        child: _buildContents(),
-      ),
+                                );
+                                pref.setBool('${exam.ref?.path}', false);
+                              },
+                              child: const Text("OK"),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content:
+                              Text('You have already Attempted this exam')));
+                    }
+                  });
+                },
+          child: buildContents()),
     );
   }
 }
