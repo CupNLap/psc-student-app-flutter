@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/batch.dart';
 import '../../pages/exam_screen.dart';
+import '../../utils/date.dart';
 
 class ExamItem extends StatelessWidget {
   const ExamItem(
@@ -17,9 +17,6 @@ class ExamItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String formattedTime =
-        DateFormat('hh:mm a MMM dd ').format(exam.startAt.toDate());
-
     Widget buildContents() {
       return Padding(
         padding: const EdgeInsets.all(16.0),
@@ -47,7 +44,7 @@ class ExamItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  formattedTime,
+                  formattedDate(exam.startAt),
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 Center(child: Image.asset(exam.icon, width: 50, height: 50)),

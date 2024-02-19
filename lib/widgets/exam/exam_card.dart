@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../model/batch.dart';
 import '../../pages/quiz_screen.dart';
+import '../../utils/date.dart';
 
 // Define the ExamCard widget
 class ExamCard extends StatelessWidget {
@@ -17,9 +17,6 @@ class ExamCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String formattedTime =
-        DateFormat('hh:mm a MMM dd ').format(exam.startAt.toDate());
-
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
@@ -99,7 +96,7 @@ class ExamCard extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomRight,
                 child: Text(
-                  formattedTime,
+                  formattedDate(exam.startAt),
                   style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 10,
