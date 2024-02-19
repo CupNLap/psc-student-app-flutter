@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:student/widgets/utils/gap.dart';
 
 import '../model/exam.dart';
 import '../monetization/google_admob/banners.dart';
@@ -47,12 +48,23 @@ class _ExamScreenState extends State<ExamScreen> {
   Widget build(BuildContext context) {
     return RestrictPop(
       title: "You can't leave exam before completion",
-      content: "Please make sure that you have completed the exam before leaving it.",
+      content:
+          "Please make sure that you have completed the exam before leaving it.",
       negativeActionText: "OK",
       positiveActionText: "Continue",
       child: Scaffold(
         body: exam == null
-            ? const Center(child: CircularProgressIndicator())
+            ? Center(
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    Gap(),
+                    Text('Loading Exam'),
+                  ],
+                ),
+              )
             : SafeArea(
                 child: CustomScrollView(
                 physics: const BouncingScrollPhysics(),
