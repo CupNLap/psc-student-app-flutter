@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../gobal/constants.dart';
+import '../gobal/crash_consts.dart';
 import '../provider/user_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/utils/gap.dart';
@@ -14,6 +15,8 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    logPageName('profile_screen.dart');
+
     return Scaffold(
       backgroundColor: AppTheme.background,
       body: Row(
@@ -56,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
                       title: "Phone",
                       content: currentUser.phoneNumber,
                     ),
-                    
+
                     ProfileItem(
                       title: "Email",
                       content: currentUser.email,

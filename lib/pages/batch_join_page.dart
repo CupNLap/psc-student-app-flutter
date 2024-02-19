@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../gobal/crash_consts.dart';
 import '../model/batch.dart';
 
 bool isValidJoiningQRCode(s) {
@@ -20,6 +21,12 @@ class BatchJoinPage extends StatefulWidget {
 
 class _BatchJoinPageState extends State<BatchJoinPage> {
   String _scanBarcode = '';
+
+  @override
+  void initState() {
+    super.initState();
+    logPageName('batch_join_page.dart');
+  }
 
   @override
   Widget build(BuildContext context) {

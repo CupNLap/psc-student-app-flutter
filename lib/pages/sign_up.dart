@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../gobal/crash_consts.dart';
 import '../model/user.dart' as MyUser;
 
 class SignUpPage extends StatefulWidget {
@@ -29,6 +31,13 @@ class SignUpPageState extends State<SignUpPage> {
   SigningState currentState = SigningState.enterPhoneNumber;
 
   String verificationId = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    logPageName('sign_up.dart');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +152,8 @@ class SignUpPageState extends State<SignUpPage> {
                       // Sign the user in (or link) with the credential
                       auth.signInWithCredential(credential).then((value) {
                         var user = auth.currentUser!;
-                        if (user.displayName == null) { // WorkAround - This is a temporary fix for bypassing QR code scaning by Google reviewrs
+                        if (user.displayName == null) {
+                          // WorkAround - This is a temporary fix for bypassing QR code scaning by Google reviewrs
                           user.updateDisplayName(_userNameController.text);
 
                           FirebaseFirestore.instance

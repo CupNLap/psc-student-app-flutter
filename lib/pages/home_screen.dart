@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../gobal/constants.dart';
+import '../gobal/crash_consts.dart';
 import '../model/batch.dart';
 import '../provider/batch_provider.dart';
 import '../provider/user_provider.dart';
@@ -24,6 +25,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+
+    logPageName('home_screen.dart');
+
     // Fetch the user details form the firestore
     Provider.of<UserProvider>(context, listen: false).fetchUserDetails().then(
       (user) {

@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:student/widgets/utils/gap.dart';
 
+import '../gobal/crash_consts.dart';
 import '../model/exam.dart';
 import '../monetization/google_admob/banners.dart';
 import '../provider/exam_provider.dart';
 import '../widgets/exam/question/question_item.dart';
 import '../widgets/exam/timer.dart';
+import '../widgets/utils/gap.dart';
 import '../widgets/utils/restrict_pop.dart';
 import 'result_screen.dart';
 
@@ -33,6 +34,7 @@ class _ExamScreenState extends State<ExamScreen> {
   @override
   void initState() {
     super.initState();
+    logPageName('exam_screen.dart');
 
     _examProvider = Provider.of<ExamProvider>(context, listen: false);
 
