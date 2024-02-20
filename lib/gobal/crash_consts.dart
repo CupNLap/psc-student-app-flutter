@@ -1,5 +1,6 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:student/utils/date.dart';
+
+import '../utils/date.dart';
 
 class CrashKey {
   static const page = 'page';
