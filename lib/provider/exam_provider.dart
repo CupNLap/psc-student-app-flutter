@@ -81,7 +81,14 @@ class ExamProvider extends ChangeNotifier {
 
   Question getQuestionAtIndex(int i) => currentExam!.questions[i];
 
-  void examStarted() {
+  void examStarted([Exam? exam, String? path]) {
+    if (exam != null) {
+      currentExam = exam;
+    }
+    if (path != null) {
+      currentExamPath = path;
+    }
+
     currentExamResult = ExamResult.essentials(
       userName: auth.currentUser!.displayName!,
       userRef: currentUserRef,
@@ -112,9 +119,9 @@ class ExamProvider extends ChangeNotifier {
   }
 
   // Get the selected Option by index
-  // getSelectedOptionAtIndex is used to get the currently selected option 
+  // getSelectedOptionAtIndex is used to get the currently selected option
   // by the student at the time of attending the exam.
-  // 
+  //
   // ISSUE - https://github.com/CupNLap/psc-student-app-flutter/issues/1
   String? getSelectedOptionAtIndex(int questionIndex) =>
       currentExamResult?.response[questionIndex]?.answer;

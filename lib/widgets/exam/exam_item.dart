@@ -65,12 +65,12 @@ class ExamItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: InkWell(
-        onTap: disabled
-            ? null
-            : () {
-                SharedPreferences.getInstance().then((pref) {
-                  bool isFirstAttempt =
-                      pref.getBool('${exam.ref?.path}') ?? true;
+          onTap: disabled
+              ? null
+              : () {
+                  SharedPreferences.getInstance().then((pref) {
+                    bool isFirstAttempt =
+                        pref.getBool('${exam.ref?.path}') ?? true;
 
                     if (isFirstAttempt) {
                       showDialog(
@@ -91,12 +91,11 @@ class ExamItem extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ExamScreen(
-                                      examRef: exam.ref,
+                                      examRef: exam.ref!,
                                       time: exam.time,
                                     ),
                                   ),
                                 );
-                                pref.setBool('${exam.ref?.path}', false);
                               },
                               child: const Text("OK"),
                             ),

@@ -125,15 +125,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
+
+                      // Ongoing Exam Section
                       ..._buildExamSection(
                           "Ongoing Exam",
                           ongoingExams,
                           (e) => AspectRatio(
                               aspectRatio: 16 / 9, child: ExamItem(e))),
 
-                      // ..._buildExamSection("Upcoming Exam", upcomingExams,
-                      //     (e) => ExamItem(e, disabled: true)),
-
+                      // Upcomming Exam Section
                       if (upcomingExams.isNotEmpty) ...[
                         const SizedBox(height: 20.0),
                         Text("Upcomming Exams",
@@ -153,8 +153,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                       ],
+
+                      // Expired Exam Section
                       ..._buildExamSection("Expired Exam", expiredExams,
-                          (e) => ExamItem(e, disabled: true)),
+                          (e) => ExamItem(e)),
                     ],
                   );
                 } else if (snapshot.hasError) {
