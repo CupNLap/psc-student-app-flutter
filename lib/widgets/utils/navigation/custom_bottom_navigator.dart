@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rive/rive.dart' hide LinearGradient;
-import 'package:student/routes/app_routes.dart';
-import 'package:student/theme/app_theme.dart';
+
+import '../../../routes/app_routes.dart';
+import '../../../theme/app_theme.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   @override

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
-import 'package:student/model/question.dart';
-import 'package:student/provider/exam_provider.dart';
+
+import '../../../model/question.dart';
+import '../../../provider/exam_provider.dart';
 
 class QuestionCard extends StatelessWidget {
   QuestionCard({

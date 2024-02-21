@@ -3,6 +3,8 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 
+import '../gobal/crash_consts.dart';
+
 class AuthGate extends StatelessWidget {
   const AuthGate({
     super.key,
@@ -13,6 +15,8 @@ class AuthGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    logPageName('auth_gate.dart');
+
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {

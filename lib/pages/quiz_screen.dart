@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:student/monetization/google_admob/banners.dart';
-import 'package:student/pages/result_screen.dart';
-import 'package:student/provider/exam_provider.dart';
-import 'package:student/widgets/exam/question/question_card.dart';
 
+import '../gobal/crash_consts.dart';
 import '../model/exam.dart';
+import '../monetization/google_admob/banners.dart';
+import '../provider/exam_provider.dart';
+import '../widgets/exam/question/question_card.dart';
+import 'result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({
@@ -28,6 +29,8 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void initState() {
     super.initState();
+
+    logPageName('quiz_screen.dart');
 
     _examProvider = Provider.of<ExamProvider>(context, listen: false);
 

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:student/gobal/constants.dart';
-import 'package:student/model/batch.dart';
-import 'package:student/pages/batch_join_page.dart';
-import 'package:student/provider/batch_provider.dart';
-import 'package:student/provider/user_provider.dart';
-import 'package:student/widgets/exam/exam_card.dart';
-import 'package:student/widgets/exam/exam_item.dart';
-import 'package:student/widgets/hero_section.dart';
 
+import '../gobal/constants.dart';
+import '../gobal/crash_consts.dart';
+import '../model/batch.dart';
+import '../provider/batch_provider.dart';
+import '../provider/user_provider.dart';
+import '../widgets/exam/exam_card.dart';
+import '../widgets/exam/exam_item.dart';
+import '../widgets/hero_section.dart';
 import '../widgets/utils/navigation/custom_bottom_navigator.dart';
+import 'batch_join_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -24,6 +25,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+
+    logPageName('home_screen.dart');
+
     // Fetch the user details form the firestore
     Provider.of<UserProvider>(context, listen: false).fetchUserDetails().then(
       (user) {
@@ -121,15 +125,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
+
+                      // Ongoing Exam Section
                       ..._buildExamSection(
                           "Ongoing Exam",
                           ongoingExams,
                           (e) => AspectRatio(
                               aspectRatio: 16 / 9, child: ExamItem(e))),
 
-                      // ..._buildExamSection("Upcoming Exam", upcomingExams,
-                      //     (e) => ExamItem(e, disabled: true)),
-
+                      // Upcomming Exam Section
                       if (upcomingExams.isNotEmpty) ...[
                         const SizedBox(height: 20.0),
                         Text("Upcomming Exams",
@@ -149,8 +153,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                       ],
+
+                      // Expired Exam Section
                       ..._buildExamSection("Expired Exam", expiredExams,
-                          (e) => ExamItem(e, disabled: true)),
+                          (e) => ExamItem(e)),
                     ],
                   );
                 } else if (snapshot.hasError) {

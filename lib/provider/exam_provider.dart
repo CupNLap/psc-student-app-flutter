@@ -1,10 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:student/gobal/constants.dart';
-import 'package:student/model/question.dart';
 
+import '../gobal/constants.dart';
 import '../model/exam.dart';
+import '../model/question.dart';
 
 class ExamProvider extends ChangeNotifier {
   final Map<String, Exam> _exams = {};
@@ -81,7 +81,14 @@ class ExamProvider extends ChangeNotifier {
 
   Question getQuestionAtIndex(int i) => currentExam!.questions[i];
 
-  void examStarted() {
+  void examStarted([Exam? exam, String? path]) {
+    if (exam != null) {
+      currentExam = exam;
+    }
+    if (path != null) {
+      currentExamPath = path;
+    }
+
     currentExamResult = ExamResult.essentials(
       userName: auth.currentUser!.displayName!,
       userRef: currentUserRef,
@@ -112,8 +119,12 @@ class ExamProvider extends ChangeNotifier {
   }
 
   // Get the selected Option by index
+  // getSelectedOptionAtIndex is used to get the currently selected option
+  // by the student at the time of attending the exam.
+  //
+  // ISSUE - https://github.com/CupNLap/psc-student-app-flutter/issues/1
   String? getSelectedOptionAtIndex(int questionIndex) =>
-      currentExamResult!.response[questionIndex]?.answer;
+      currentExamResult?.response[questionIndex]?.answer;
 
   void setTheSelectedOptionAtIndex(int questionIndex, String selectedOption) {
     try {

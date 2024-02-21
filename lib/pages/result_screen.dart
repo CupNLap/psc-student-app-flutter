@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:student/model/exam.dart';
-import 'package:student/model/question.dart';
-import 'package:student/provider/exam_provider.dart';
+
+import '../gobal/crash_consts.dart';
+import '../model/exam.dart';
+import '../model/question.dart';
+import '../provider/exam_provider.dart';
 
 class ResultsScreen extends StatelessWidget {
   const ResultsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    logPageName('result_screen.dart');
+
     ExamProvider provider = Provider.of<ExamProvider>(context, listen: false);
     ExamResult? result = provider.currentExamResult;
     Map<String, List<Question>> analysis = provider.getResponseAnalysis();
