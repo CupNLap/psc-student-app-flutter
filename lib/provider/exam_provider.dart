@@ -204,8 +204,6 @@ class ExamProvider extends ChangeNotifier {
     currentExamResult!.totalMarks = currentExam!.questions.length;
     // Update the ExamResult provider
 
-    _saveExamResultInFirestore();
-
     notifyListeners();
   }
 
@@ -214,7 +212,7 @@ class ExamProvider extends ChangeNotifier {
     currentExamResult = null;
   }
 
-  void _saveExamResultInFirestore() {
+  void saveExamResultInFirestore() {
     if (currentExam != null && currentExamResult != null) {
       // save the exam result in firestore
       _firestore

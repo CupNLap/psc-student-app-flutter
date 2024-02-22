@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/batch.dart';
-import '../../pages/exam_screen.dart';
 import '../../utils/date.dart';
 
 class ExamItem extends StatelessWidget {
   const ExamItem(
     this.exam, {
     this.disabled = false,
+    this.allowMultipleAttempt=false,
+    this.onProceed,
     super.key,
   });
 
   final BatchExam exam;
   final bool disabled;
+  final bool allowMultipleAttempt;
+  final void Function()? onProceed;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +75,9 @@ class ExamItem extends StatelessWidget {
                     bool isFirstAttempt =
                         pref.getBool('${exam.ref?.path}') ?? true;
 
-                    if (isFirstAttempt) {
+                    bool canAttempt = allowMultipleAttempt || isFirstAttempt;
+
+                    if (onProceed != null && canAttempt) {
                       showDialog(
                         context: context,
                         builder: (_) => AlertDialog(
@@ -86,16 +91,8 @@ class ExamItem extends StatelessWidget {
                               onPressed: () {
                                 // Close the AlertDialog
                                 Navigator.pop(context);
-                                // Navigate to the exam
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ExamScreen(
-                                      examRef: exam.ref!,
-                                      time: exam.time,
-                                    ),
-                                  ),
-                                );
+                                // execute the onProceed function
+                                onProceed!();
                               },
                               child: const Text("OK"),
                             ),

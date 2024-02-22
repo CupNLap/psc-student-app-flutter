@@ -11,6 +11,8 @@ import '../widgets/exam/exam_item.dart';
 import '../widgets/hero_section.dart';
 import '../widgets/utils/navigation/custom_bottom_navigator.dart';
 import 'batch_join_page.dart';
+import 'exam_screen.dart';
+import 'quiz_screen.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -125,13 +127,26 @@ class _MyHomePageState extends State<MyHomePage> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
-
                       // Ongoing Exam Section
                       ..._buildExamSection(
                           "Ongoing Exam",
                           ongoingExams,
                           (e) => AspectRatio(
-                              aspectRatio: 16 / 9, child: ExamItem(e))),
+                              aspectRatio: 16 / 9,
+                              child: ExamItem(
+                                e,
+                                onProceed:
+                                    // Navigate to the exam
+                                    () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ExamScreen(
+                                      examRef: e.ref!,
+                                      time: e.time,
+                                    ),
+                                  ),
+                                ),
+                              ))),
 
                       // Upcomming Exam Section
                       if (upcomingExams.isNotEmpty) ...[
@@ -155,8 +170,22 @@ class _MyHomePageState extends State<MyHomePage> {
                       ],
 
                       // Expired Exam Section
-                      ..._buildExamSection("Expired Exam", expiredExams,
-                          (e) => ExamItem(e)),
+                      ..._buildExamSection(
+                          "Expired Exam",
+                          expiredExams,
+                          (e) => ExamItem(
+                                e,
+                                // Navigate to the Quiz
+                                onProceed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => QuizScreen(
+                                      quizRef: e.ref!,
+                                    ),
+                                  ),
+                                ),
+                                allowMultipleAttempt: true,
+                              )),
                     ],
                   );
                 } else if (snapshot.hasError) {
