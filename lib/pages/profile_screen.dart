@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SafeArea(
+              child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -75,6 +76,7 @@ class ProfileScreen extends StatelessWidget {
                               }
                             },
                     ),
+
                     // Link with the email, if not connected yet
                     if (!currentUser.emailVerified) ...[
                       Gap(AppTheme.smallGutter),
@@ -90,6 +92,13 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       Gap(AppTheme.largeGutter),
                     ],
+                    Gap(100),
+                    CustomButton(
+                      buttonColor: Colors.red,
+                      icon: Icons.logout,
+                      text: "LogOut",
+                      onPressed: () => FirebaseAuth.instance.signOut(),
+                    )
                   ],
                 ),
               ),
