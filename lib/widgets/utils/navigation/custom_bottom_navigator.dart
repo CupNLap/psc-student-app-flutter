@@ -1,10 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:rive/rive.dart' hide LinearGradient;
 
+import '../../../gobal/constants.dart';
+import '../../../pages/profile_screen.dart';
+import '../../../provider/user_provider.dart';
 import '../../../routes/app_routes.dart';
 import '../../../theme/app_theme.dart';
+import '../gap.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   @override
@@ -61,38 +67,69 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               colors: [Colors.white54, Colors.white10],
             )),
         // This container will contain the content
-        child: Container(
-          decoration: BoxDecoration(
-              color: AppTheme.background2.withOpacity(0.8),
-              borderRadius: BorderRadius.circular(24),
-              boxShadow: [
-                BoxShadow(
-                  color: AppTheme.background2.withOpacity(0.3),
-                  blurRadius: 20,
-                  offset: Offset(0, 20),
-                )
-              ]),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.max,
-            children: List.generate(
-              tabItems.length,
-              (index) => CupertinoButton(
-                padding: EdgeInsets.all(12),
-                onPressed: () => onTabNavigationItem(index),
-                child: SizedBox(
-                  width: 36,
-                  height: 36,
-                  child: RiveAnimation.asset(
-                    'assets/rive_app/rive/icons.riv',
-                    stateMachines: [tabItems[index].stateMachine],
-                    artboard: tabItems[index].artboard,
-                    onInit: (artboard) => _onRiveIconInit(artboard, index),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (!currentUser.emailVerified) ...[
+              Gap(),
+              Text(
+                  "Login with moblie number will be removed soon\nSo it is recommeded to link your account with your email, click the bellow button to link the email"),
+              Gap(),
+              CustomButton(
+                buttonColor: Colors.red,
+                icon: Icons.email,
+                onPressed: () async {
+                  try {
+                    await Provider.of<UserProvider>(context, listen: false)
+                        .signInWithGoogle();
+                  } on FirebaseAuthException catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content:
+                            Text('Error occured \n${e.email} \n${e.message}'),
+                        duration: Duration(seconds: 10),
+                      ),
+                    );
+                  }
+                },
+                text: "Link Your Email",
+              ),
+              Gap(50),
+            ],
+            Container(
+              decoration: BoxDecoration(
+                  color: AppTheme.background2.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppTheme.background2.withOpacity(0.3),
+                      blurRadius: 20,
+                      offset: Offset(0, 20),
+                    )
+                  ]),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.max,
+                children: List.generate(
+                  tabItems.length,
+                  (index) => CupertinoButton(
+                    padding: EdgeInsets.all(12),
+                    onPressed: () => onTabNavigationItem(index),
+                    child: SizedBox(
+                      width: 36,
+                      height: 36,
+                      child: RiveAnimation.asset(
+                        'assets/rive_app/rive/icons.riv',
+                        stateMachines: [tabItems[index].stateMachine],
+                        artboard: tabItems[index].artboard,
+                        onInit: (artboard) => _onRiveIconInit(artboard, index),
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
