@@ -20,10 +20,10 @@ class HeroSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset('assets/images/hero.png'),
+            // Image.asset('assets/images/hero.png'),
             const SizedBox(height: 30),
             const Text(
-              'Admission started for LDC crash course at Alchemist Bathery',
+              'You need to attempt the Ongoing exam on time, inorder to get valuated. \n\n Practice the expired exams as far as you need',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,

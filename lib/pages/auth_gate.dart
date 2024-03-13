@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart' hide PhoneAuthProvider;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,6 @@ class AuthGate extends StatelessWidget {
                 colorScheme: ColorScheme.fromSeed(seedColor: Colors.red)),
             home: SignInScreen(
               providers: [
-                PhoneAuthProvider(),
                 GoogleProvider(
                     clientId: "AIzaSyB7LvpHUOr8utXvKeF0fYZqCmGTl37tqag"),
               ],
