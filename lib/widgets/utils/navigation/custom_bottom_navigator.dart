@@ -153,7 +153,10 @@ class TabItem {
   late SMIBool? status;
 
   static List<TabItem> tabItems = [
-    TabItem(stateMachine: "HOME_interactivity", artboard: "HOME"),
+    TabItem(
+        stateMachine: "HOME_interactivity",
+        artboard: "HOME",
+        path: AppRoutes.homeRoute),
     // TabItem(stateMachine: "CHAT_Interactivity", artboard: "CHAT"),
     // TabItem(stateMachine: "SEARCH_Interactivity", artboard: "SEARCH"),
     // TabItem(stateMachine: "TIMER_Interactivity", artboard: "TIMER"),

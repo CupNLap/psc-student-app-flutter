@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:student/routes/app_routes.dart';
 
 import '../gobal/constants.dart';
 import '../gobal/crash_consts.dart';
@@ -9,7 +11,6 @@ import '../provider/user_provider.dart';
 import '../widgets/exam/exam_card.dart';
 import '../widgets/exam/exam_item.dart';
 import '../widgets/hero_section.dart';
-import '../widgets/utils/navigation/custom_bottom_navigator.dart';
 import 'batch_join_page.dart';
 import 'exam_screen.dart';
 import 'quiz_screen.dart';
@@ -85,8 +86,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                context.push(AppRoutes.profileRoute);
+              },
+              icon: Icon(Icons.person))
+        ],
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(),
       // Home Screen Body contains the list of ongoing, upcomming and expired exams
       body: Padding(
         padding: const EdgeInsets.all(8.0),
