@@ -22,7 +22,7 @@ class AppRoutes {
             docPath: 'AppDetails/version',
             expiredField: "studentExpired",
             latestField: "studentLatest",
-            version: 5,
+            version: 6,
             updateUrl: Uri.parse(
                 "https://play.google.com/store/apps/details?id=com.alchemist.student"),
             child: const MyHomePage(title: "Alchemist Bathery")),
