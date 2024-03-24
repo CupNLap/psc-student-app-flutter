@@ -122,7 +122,7 @@ class _OptionsViewState extends State<OptionsView> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: widget.options.map((option) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 2.0),
           child: ElevatedButton(
             onPressed: () {
               setState(() {

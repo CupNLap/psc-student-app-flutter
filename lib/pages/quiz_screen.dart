@@ -6,7 +6,9 @@ import '../gobal/crash_consts.dart';
 import '../model/exam.dart';
 import '../monetization/google_admob/banners.dart';
 import '../provider/exam_provider.dart';
+import '../theme/app_theme.dart';
 import '../widgets/exam/question/question_card.dart';
+import '../widgets/utils/gap.dart';
 import 'result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -77,40 +79,51 @@ class _QuizScreenState extends State<QuizScreen> {
       backgroundColor: const Color(0xFF6A52D0),
       body: exam == null
           ? Container()
-          : Padding(
-              padding: const EdgeInsets.symmetric(vertical: 60.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    exam!.name,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 24.02,
-                      fontFamily: 'Kodchasan',
-                      fontWeight: FontWeight.w600,
-                      height: 0,
+          : SafeArea(
+            child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Gap(AppTheme.smallGutter),
+                    Text(
+                      exam!.name,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24.02,
+                        fontFamily: 'Kodchasan',
+                        fontWeight: FontWeight.w600,
+                        height: 0,
+                      ),
                     ),
-                  ),
-                  const GoogleBannerAd(),
-                  // const AdBanner(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: QuestionCard(questionIndex: currentQuestionIndex),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber,
-                      foregroundColor: Colors.black,
+                    const GoogleBannerAd(),
+                    Gap(AppTheme.largeGutter),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: QuestionCard(questionIndex: currentQuestionIndex),
                     ),
-                    onPressed: () => _handleNextClick(),
-                    child: const Text("Next Question"),
-                  )
-                ],
+                  ],
+                ),
               ),
+          ),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Gap(AppTheme.largeGutter),
+          const GoogleBannerAd(),
+          Gap(),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.amber,
+              foregroundColor: Colors.black,
             ),
+            onPressed: () => _handleNextClick(),
+            child: const Text("Next Question"),
+          ),
+          Gap(),
+        ],
+      ),
     );
   }
 }
