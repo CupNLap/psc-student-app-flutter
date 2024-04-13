@@ -169,7 +169,12 @@ class _MyHomePageState extends State<MyHomePage> {
                               width: MediaQuery.of(context).size.width / 2.8,
                               child: ExamCard(
                                 upcomingExams[index],
-                                disabled: true,
+                                onTap: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              "This exam is not yet started\nYou need to wait for it.")));
+                                },
                               ),
                             ),
                           ),
