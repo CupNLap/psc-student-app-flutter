@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../model/batch.dart';
-import '../../pages/quiz_screen.dart';
 import '../../utils/date.dart';
 
 // Define the ExamCard widget
