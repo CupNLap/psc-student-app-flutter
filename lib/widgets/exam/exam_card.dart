@@ -7,11 +7,11 @@ import '../../utils/date.dart';
 // Define the ExamCard widget
 class ExamCard extends StatelessWidget {
   final BatchExam exam;
-  final bool disabled;
+  final void Function()? onTap;
 
   const ExamCard(
     this.exam, {
-    this.disabled = false,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -23,35 +23,7 @@ class ExamCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: InkWell(
-        onTap: disabled
-            ? null // Clicking is disabled
-            : () => {
-                  showDialog(
-                    context: context,
-                    builder: (_) => AlertDialog(
-                      content: Text(
-                          'Are ready to attempt the exam - "${exam.name}"?'),
-                      actions: [
-                        TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: const Text("Cancel")),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    QuizScreen(quizRef: exam.ref),
-                              ),
-                            );
-                          },
-                          child: const Text("OK"),
-                        ),
-                      ],
-                    ),
-                  ),
-                },
+        onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
