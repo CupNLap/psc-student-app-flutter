@@ -25,6 +25,7 @@ class AuthGate extends StatelessWidget {
             theme: ThemeData(
                 colorScheme: ColorScheme.fromSeed(seedColor: Colors.red)),
             home: SignInScreen(
+              showAuthActionSwitch: false,
               providers: [
                 GoogleProvider(
                     clientId: "AIzaSyB7LvpHUOr8utXvKeF0fYZqCmGTl37tqag"),
