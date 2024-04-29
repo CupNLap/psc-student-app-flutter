@@ -60,7 +60,7 @@ class ExamScreen extends StatelessWidget {
                           onTimerOver: () {
                             _handleExamSubmit();
                           }),
-                      const GoogleBannerAd(),
+                      GoogleBannerAd('ca-app-pub-3032031918447892/3252184339'),
                       Text(exam.code, style: const TextStyle(fontSize: 12.0)),
                     ]),
               ),

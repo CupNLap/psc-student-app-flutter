@@ -80,7 +80,7 @@ class _QuizScreenState extends State<QuizScreen> {
       body: exam == null
           ? Container()
           : SafeArea(
-            child: SingleChildScrollView(
+              child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -97,7 +97,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         height: 0,
                       ),
                     ),
-                    const GoogleBannerAd(),
+                    GoogleBannerAd('ca-app-pub-3032031918447892/5686775981'),
                     Gap(AppTheme.largeGutter),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -106,12 +106,12 @@ class _QuizScreenState extends State<QuizScreen> {
                   ],
                 ),
               ),
-          ),
+            ),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Gap(AppTheme.largeGutter),
-          const GoogleBannerAd(),
+          GoogleBannerAd('ca-app-pub-3032031918447892/5686775981'),
           Gap(),
           ElevatedButton(
             style: ElevatedButton.styleFrom(

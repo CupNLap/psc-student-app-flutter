@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class GoogleBannerAd extends StatefulWidget {
-  const GoogleBannerAd({super.key});
+  final String? adUnitId;
+
+  GoogleBannerAd(
+    this.adUnitId, {
+    super.key,
+  });
 
   @override
   State<GoogleBannerAd> createState() => GoogleBannerAdState();
@@ -14,8 +19,7 @@ class GoogleBannerAdState extends State<GoogleBannerAd> {
   BannerAd? _bannerAd;
   bool _isLoaded = false;
 
-  // TODO: replace this test ad unit with your own ad unit.
-  final adUnitId = Platform.isAndroid
+  final _sampleAdId = Platform.isAndroid
       ? 'ca-app-pub-3940256099942544/6300978111'
       : 'ca-app-pub-3940256099942544/2934735716';
 
@@ -28,7 +32,7 @@ class GoogleBannerAdState extends State<GoogleBannerAd> {
   /// Loads a banner ad.
   void loadAd() {
     _bannerAd = BannerAd(
-      adUnitId: adUnitId,
+      adUnitId: widget.adUnitId ?? _sampleAdId,
       request: const AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(
