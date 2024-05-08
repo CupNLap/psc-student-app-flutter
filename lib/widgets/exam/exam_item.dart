@@ -8,7 +8,7 @@ class ExamItem extends StatelessWidget {
   const ExamItem(
     this.exam, {
     this.disabled = false,
-    this.allowMultipleAttempt=false,
+    this.allowMultipleAttempt = false,
     this.onProceed,
     super.key,
   });
@@ -78,6 +78,8 @@ class ExamItem extends StatelessWidget {
                     bool canAttempt = allowMultipleAttempt || isFirstAttempt;
 
                     if (onProceed != null && canAttempt) {
+                      // Previousely onProceed was used at this check only.
+                      // That results in an error on runtime for some users, so we started checking at execution too
                       showDialog(
                         context: context,
                         builder: (_) => AlertDialog(
@@ -91,8 +93,9 @@ class ExamItem extends StatelessWidget {
                               onPressed: () {
                                 // Close the AlertDialog
                                 Navigator.pop(context);
-                                // execute the onProceed function
-                                onProceed!();
+                                // execute the onProceed function if exist,
+                                // Keep both null checking fro onProceed, as there is occurence of stability issues on production
+                                if (onProceed != null) onProceed!();
                               },
                               child: const Text("OK"),
                             ),
